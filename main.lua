@@ -1,6 +1,6 @@
 -- main.lua
 -- Game loop
-local common      = require('common')
+local common      = require('game.common')
 local competition = require('game.competition')
 local state       = require('game.state')
 local maprender   = require('state.maprender')

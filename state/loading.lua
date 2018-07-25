@@ -4,7 +4,7 @@ local transition = require('state.transition')
 local termio = require('term.io')
 local colour = require('term.colour')
 local hole   = require('game.hole')
-local common = require('common')
+local common = require('game.common')
 local class  = require('30log')
 local loading = class("loading")
 
