@@ -10,7 +10,7 @@ local cell       = require('forma.cell')
 local log        = require('lib.log')
 local map        = require('game.map')
 local par        = require('game.par')
-local common     = require('common')
+local common     = require('game.common')
 local hole     = {}
 
 local generators = {}

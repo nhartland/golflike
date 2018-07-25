@@ -8,10 +8,8 @@ local colour = require('term.colour')
 
 local competition = {}
 
-local all_surnames = {}
-for line in io.lines("data/surnames.txt") do
-    table.insert(all_surnames, line)
-end
+-- List of possible surnames
+local all_surnames = require('data.surnames')
 
 --- Generate a new rival
 -- Each rival has three properties

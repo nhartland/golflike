@@ -1,6 +1,6 @@
 --- draw.lua
 -- Handling of terminal I/O
-local common      = require("common")
+local common      = require("game.common")
 local competition = require('game.competition')
 local map         = require("game.map")
 local termio      = require("term.io")

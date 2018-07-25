@@ -1,9 +1,9 @@
 -- exitconf.lua
 -- game exit confirmation window
 local draw   = require('game.draw')
+local keymap = require('game.keymap')
 local termio = require('term.io')
 local keys   = require('term.keys')
-local keymap = require('keymap')
 local class  = require('30log')
 local exitconf = class("ExitConf")
 

@@ -7,7 +7,7 @@ local draw   = require('game.draw')
 local termio = require('term.io')
 local keys   = require('term.keys')
 local colour = require('term.colour')
-local keymap = require('keymap')
+local keymap = require('game.keymap')
 local class  = require('30log')
 local help = class("help")
 

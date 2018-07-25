@@ -3,17 +3,17 @@
 
 local markov = {}
 
---- Read a corpus from a file
--- This assumes that the file `filename` contains one
--- word per line. `order` specified the Markov-Chain order
-function markov.init(filename, order)
+--- Process a corpus from a table
+-- Expects as input a table of strings making up the text corpus.
+-- `order` specifies the Markov-Chain order.
+function markov.init(corpus, order)
     local map = {}
     map.initiators  = {} -- All initiating strings of length `order`
     map.terminators = {} -- All terminating strings of length `order`
     map.options = {}     -- Options form every order-length ngram
     map.order = order
 
-    for word in io.lines(filename) do
+    for _, word in ipairs(corpus) do
         if #word > order then
             for i=order, #word-1, 1 do
                 local sprev =  word:sub(1+i-order,i):lower()

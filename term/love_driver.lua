@@ -56,6 +56,13 @@ colourmap[colour.b_magenta] = {215,60,77}
 colourmap[colour.b_cyan]    = {175,196,219}
 colourmap[colour.b_white]   = {255,255,255}
 
+-- Process colourmap to [0,1] as per newer love versions
+for _, v in pairs(colourmap) do
+    v[1] = v[1]/255.
+    v[2] = v[2]/255.
+    v[3] = v[3]/255.
+end
+
 -- Keypresses work a bit differently in the love2d renderer.
 -- love.textinput pushes keys to a buffer which are accessed by getInput
 function love.textinput( key )
@@ -87,7 +94,7 @@ end
 -- Render the display to screen
 function l2d.draw()
     l2d.graphics.setCanvas()
-    l2d.graphics.setColor(255,255,255,255)
+    l2d.graphics.setColor(1,1,1,1)
     l2d.graphics.draw(l2d.canvas)
 end
 
@@ -95,6 +102,7 @@ end
 function l2d.clear()
     l2d.graphics.setCanvas(l2d.canvas)
     l2d.graphics.clear( )
+    l2d.graphics.setCanvas()
 end
 
 function l2d.close()                                end -- Close the display
@@ -119,6 +127,7 @@ function l2d.mvaddch(l, c, ch)
         l2d.graphics.setColor(fg)
         l2d.graphics.draw(glyphSprite, qd, px, py, nil, l2d.scale)
     end
+    l2d.graphics.setCanvas()
 end
 
 -- Set the (foreground, background) colour
