@@ -1,0 +1,11 @@
+### State-stack elements
+ - aim: handles aiming
+ - flight: handles 'physics'
+ - loading: loading state
+ - menu: main menu
+ - score_hole: handle the scoring of a hole
+ - exitconf: exit confirmation prompt
+ - help: help display screen
+ - maprender: map rendering
+ - message: general message state
+ - transition: handles moving through course
