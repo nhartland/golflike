@@ -15,7 +15,7 @@ end
 
 --- Game initialisation
 function game.load()
-    log.outfile='log.txt'
+--    log.outfile='log.txt'
     log.level='trace'
 
     -- Setup game state
@@ -60,17 +60,8 @@ end
 
 -- Wrap things up
 function game.close()
-    -- Finalise by writing scoreboard entry
-    local exitstring = os.date("%c").." v"..common.version.." - Course: \'" ..tostring(game.state:name())
-    exitstring = exitstring .. "\'. completed " .. #game.state.scorecard .. "/" .. game.state:total_holes() .. " holes."
-    exitstring = exitstring .. competition.get_scorestring(game.state.scorecard, game.state:total_holes()) .. '\n'
-    local scoreboard = io.open ("scoreboard.txt", "a+" )
-    io.output(scoreboard) io.write(exitstring) io.close(scoreboard)
-
     -- Exit game
     termio.close()
-    print(exitstring)
-
     -- Trigger love quit event
     if love ~= nil then
         love.event.quit( )
@@ -101,6 +92,14 @@ if love == nil then
     repeat
         xpcall (loop, err)
     until running == false
+
+    -- Finalise by writing scoreboard entry
+    local exitstring = os.date("%c").." v"..common.version.." - Course: \'" ..tostring(game.state:name())
+    exitstring = exitstring .. "\'. completed " .. #game.state.scorecard .. "/" .. game.state:total_holes() .. " holes."
+    exitstring = exitstring .. competition.get_scorestring(game.state.scorecard, game.state:total_holes()) .. '\n'
+    local scoreboard = io.open ("scoreboard.txt", "a+" )
+    io.output(scoreboard) io.write(exitstring) io.close(scoreboard)
+    print(exitstring)
 
     -- Exit when finished
     os.exit(0)
