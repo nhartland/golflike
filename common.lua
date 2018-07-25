@@ -1,5 +1,5 @@
 local common = {}
-common.version = "0.4b"
+common.version = "0.4"
 common.banner = {"              _  __ _ _ _         ",
                  "             | |/ _| (_) |        ",
                  "   __ _  ___ | | |_| |_| | _____  ",
