@@ -146,7 +146,7 @@ function aim:control(gstate)
 
     -- Current standings
     if input == keymap.standings then
-        local competition  = require("competition")
+        local competition  = require("game.competition")
         local message      = require("state.message")
         local text, tcolour = competition.get_standings_message(gstate:get_scorecard(),
                              gstate:get_rivals(), gstate:total_holes())

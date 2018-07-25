@@ -26,11 +26,9 @@ function menu:init(gstate)
     }
 
     -- Setup club name information
-    local markov_chain = markov.init('data/english_towns.txt', 3)
-    local extensions = {}
-    for ext in io.lines('data/club_extensions.txt') do
-        table.insert(extensions, ext)
-    end
+    local towns      = require('data.towns')
+    local extensions = require('data.extensions')
+    local markov_chain = markov.init(towns, 3)
 
     -- Generate course names
     self.courses = {}
@@ -39,7 +37,7 @@ function menu:init(gstate)
         local rng = random.get_generator(v.stype)
         local markov_name = markov.word(markov_chain, 12, rng)
         local uppercase = markov_name:sub(1,1):upper() .. markov_name:sub(2)
-        local full_name = uppercase .. extensions[rng(#extensions)]
+        local full_name = uppercase .. ' ' .. extensions[rng(#extensions)]
         table.insert(self.courses, {stype = v.stype, name = full_name})
     end
 
