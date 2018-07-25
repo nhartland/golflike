@@ -1,0 +1,106 @@
+-- term.io keys
+-- Common key mapping for all term.io drivers
+
+local K = {
+    NULL = -1,
+    -- Identical as per string.byte(key_from_terminal)
+    QUESTION = 63,
+    COMMA   = 44,
+    FSLASH  = 47,
+    DOT     = 46,
+    SPACE   = 32,
+    RETURN  = 10,
+    TAB     = 9,
+    A = 65,
+    B = 66,
+    C = 67,
+    D = 68,
+    E = 69,
+    F = 70,
+    G = 71,
+    H = 72,
+    I = 73,
+    J = 74,
+    K = 75,
+    L = 76,
+    M = 77,
+    N = 78,
+    O = 79,
+    P = 80,
+    Q = 81,
+    R = 82,
+    S = 83,
+    T = 84,
+    U = 85,
+    V = 86,
+    W = 87,
+    X = 88,
+    Y = 89,
+    Z = 90,
+    a = 97,
+    b = 98,
+    c = 99,
+    d = 100,
+    e = 101,
+    f = 102,
+    g = 103,
+    h = 104,
+    i = 105,
+    j = 106,
+    k = 107,
+    l = 108,
+    m = 109,
+    n = 110,
+    o = 111,
+    p = 112,
+    q = 113,
+    r = 114,
+    s = 115,
+    t = 116,
+    u = 117,
+    v = 118,
+    w = 119,
+    x = 120,
+    y = 121,
+    z = 122,
+    -- Correspond to escape codes
+    ESC   = 300,
+    UP 	  = 301,
+    DOWN  = 302,
+    RIGHT = 303,
+    LEFT  = 304,
+    NUM1  = 305,
+    NUM2  = 306,
+    NUM3  = 307,
+    NUM4  = 308,
+    NUM5  = 309,
+    NUM6  = 310,
+    NUM7  = 311,
+    NUM8  = 312,
+    NUM9  = 313,
+    DEL   = 314,
+    F1    = 400,
+    F2    = 401,
+    F3    = 402,
+    F4    = 403,
+    F5    = 404,
+    F6    = 405,
+    F7    = 406,
+    F8    = 407,
+    F9    = 408,
+    F10   = 409,
+    F11   = 410,
+    F12   = 411
+}
+
+-- Find the identifier for a selected key
+function K.findKey(id)
+    for k, v in pairs(K) do
+        if v == id then
+            return k
+        end
+    end
+    return "NULL"
+end
+
+return K
