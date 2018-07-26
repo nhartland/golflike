@@ -1,7 +1,6 @@
 -- astar.lua
 -- Basic implementation of a-star pathfinding
-local path = (...):match("(.-)[^%.]+$")
-local pqueue = require(path..'pqueue')
+local pqueue = require('alg.pqueue')
 local astar = {}
 
 -- A-star pathfinding ---------------------------------------------------------------------------

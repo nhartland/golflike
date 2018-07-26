@@ -1,5 +1,6 @@
 -- markov.lua
 -- Random word generation via basic markov-chain
+
 local markov = {}
 
 --- Process a corpus from a table
