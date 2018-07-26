@@ -1,12 +1,12 @@
 --- loading.lua
 -- State to manage and display the loading of a course
-local transition = require('state.transition')
-local termio = require('term.io')
-local colour = require('term.colour')
-local hole   = require('game.hole')
-local common = require('game.common')
-local class  = require('30log')
-local loading = class("loading")
+local class      = require('30log')
+local transition = require('game.transition')
+local hole       = require('game.hole')
+local common     = require('game.common')
+local termio     = require('term.io')
+local colour     = require('term.colour')
+local loading    = class("loading")
 
 -- Initialise RNG for loadstate
 function loading:init(gstate, rng)

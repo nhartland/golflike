@@ -103,7 +103,7 @@ function aim:control(gstate)
     -- Quit if 10 over par
     if gstate:get_stroke_count() - #hole.opt_course == 9 then
         gstate.terminate=true
-        local message = require("state.message")
+        local message = require("game.message")
         local text = "GAME OVER\n Retiring +9 over par"
         return true, true, message(gstate, nil, text)
     end
@@ -134,20 +134,20 @@ function aim:control(gstate)
         local target     = self.path_targets[math.random(#self.targets)]
         local trajectory = geometry.compute_trajectory(hole, club, gstate:ball_position(), target)
         gstate:increment_stroke_count()
-        local flight = require('state.flight')
+        local flight = require('game.flight')
         return true, true, flight(gstate:ball_position(), trajectory, club)
     elseif input == keymap.help then
-        local help = require('state.help')
+        local help = require('game.help')
         return true, false, help(self:current_club())
     elseif input == keymap.exit_game then
-        local exitconf = require('state.exitconf')
+        local exitconf = require('game.exitconf')
         return true, true, exitconf(gstate)
     end
 
     -- Current standings
     if input == keymap.standings then
         local competition  = require("game.competition")
-        local message      = require("state.message")
+        local message      = require("game.message")
         local text, tcolour = competition.get_standings_message(gstate:get_scorecard(),
                              gstate:get_rivals(), gstate:total_holes())
         return true, false, message(gstate, nil, text, tcolour, {keymap.standings})
@@ -155,7 +155,7 @@ function aim:control(gstate)
 
     -- Debug controls
     if input == keymap.debug_next  then
-        local score_hole = require("state.score_hole")
+        local score_hole = require("game.score_hole")
         return true, true, score_hole(gstate)
     elseif input == keymap.debug_par then
         self.display_par = not self.display_par

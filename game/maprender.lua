@@ -1,9 +1,9 @@
 -- maprender.lua
 -- This class renders the map and statuslines to screen.
-local aim    = require('state.aim')
-local termio = require('term.io')
-local draw   = require('game.draw')
 local class  = require('30log')
+local termio = require('term.io')
+local aim    = require('game.aim')
+local draw   = require('game.draw')
 local maprender = class("maprender")
 
 function maprender:init() end

@@ -1,9 +1,9 @@
 --- geometry.lua
 -- This module computes ball trajectories and aiming arcs
 local primitives = require('forma.primitives')
+local cell       = require('forma.cell')
 local bresenham  = require('game.bresenham')
 local clubs      = require('game.clubs')
-local cell       = require('forma.cell')
 local map        = require("game.map")
 local geometry = {}
 

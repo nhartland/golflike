@@ -1,7 +1,5 @@
---- standard.lua
--- Standard map layout
--- Common to `classic` `links` and `forest`
-
+--- mapgen.lua
+-- Standard map layout generation
 local neighbourhood = require('forma.neighbourhood')
 local subpattern    = require('forma.subpattern')
 local automata      = require('forma.automata')

@@ -1,15 +1,15 @@
 --- menu.lua
 -- Game menu, for course selection
+local date    = require("date")
+local class   = require('30log')
 local termio  = require('term.io')
 local colour  = require('term.colour')
 local keys    = require('term.keys')
-local markov  = require('state.markov')
-local loading = require('state.loading')
+local markov  = require('game.markov')
+local loading = require('game.loading')
 local random  = require('game.random')
 local common  = require('game.common')
 local keymap  = require('game.keymap')
-local date    = require("date")
-local class   = require('30log')
 local menu = class("menu")
 
 

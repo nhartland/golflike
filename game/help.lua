@@ -1,14 +1,14 @@
 -- help.lua
 -- Help screen, displays a map key, controls and club ranges.
+local class  = require('30log')
 local cell   = require('forma.cell')
 local clubs  = require('game.clubs')
 local map    = require('game.map')
 local draw   = require('game.draw')
+local keymap = require('game.keymap')
 local termio = require('term.io')
 local keys   = require('term.keys')
 local colour = require('term.colour')
-local keymap = require('game.keymap')
-local class  = require('30log')
 local help = class("help")
 
 function help:init() end

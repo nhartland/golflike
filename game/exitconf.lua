@@ -23,7 +23,7 @@ function exitconf:control(gstate)
         gstate.terminate = true
         return true, true, nil
     elseif key == keymap.deny then
-        local aim = require('state.aim')
+        local aim = require('game.aim')
         return true, true, aim(gstate)
     end
 end
