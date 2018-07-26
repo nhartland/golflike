@@ -1,9 +1,9 @@
 --- loading.lua
 -- State to manage and display the loading of a course
 local class      = require('30log')
-local transition = require('game.transition')
-local hole       = require('game.hole')
-local common     = require('game.common')
+local transition = require('golflike.transition')
+local hole       = require('golflike.hole')
+local common     = require('golflike.common')
 local termio     = require('term.io')
 local colour     = require('term.colour')
 local loading    = class("loading")

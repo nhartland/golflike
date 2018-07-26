@@ -5,11 +5,11 @@ local class   = require('30log')
 local termio  = require('term.io')
 local colour  = require('term.colour')
 local keys    = require('term.keys')
-local markov  = require('game.markov')
-local loading = require('game.loading')
-local random  = require('game.random')
-local common  = require('game.common')
-local keymap  = require('game.keymap')
+local markov  = require('golflike.markov')
+local loading = require('golflike.loading')
+local random  = require('golflike.random')
+local common  = require('golflike.common')
+local keymap  = require('golflike.keymap')
 local menu = class("menu")
 
 
@@ -26,8 +26,8 @@ function menu:init(gstate)
     }
 
     -- Setup club name information
-    local towns      = require('game.town_data')
-    local extensions = require('game.suffix_data')
+    local towns      = require('golflike.town_data')
+    local extensions = require('golflike.suffix_data')
     local markov_chain = markov.init(towns, 3)
 
     -- Generate course names

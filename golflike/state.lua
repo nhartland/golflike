@@ -1,7 +1,7 @@
 --- state.lua
 -- class containing global game state
 local class       = require('30log')
-local competition = require('game.competition')
+local competition = require('golflike.competition')
 local cell        = require('forma.cell')
 local state       = class("GameState", {})
 

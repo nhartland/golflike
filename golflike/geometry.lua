@@ -2,9 +2,9 @@
 -- This module computes ball trajectories and aiming arcs
 local primitives = require('forma.primitives')
 local cell       = require('forma.cell')
-local bresenham  = require('game.bresenham')
-local clubs      = require('game.clubs')
-local map        = require("game.map")
+local bresenham  = require('golflike.bresenham')
+local clubs      = require('golflike.clubs')
+local map        = require("golflike.map")
 local geometry = {}
 
 -- Get the range for using a club at one point

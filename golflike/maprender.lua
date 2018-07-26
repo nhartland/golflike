@@ -2,8 +2,8 @@
 -- This class renders the map and statuslines to screen.
 local class  = require('30log')
 local termio = require('term.io')
-local aim    = require('game.aim')
-local draw   = require('game.draw')
+local aim    = require('golflike.aim')
+local draw   = require('golflike.draw')
 local maprender = class("maprender")
 
 function maprender:init() end

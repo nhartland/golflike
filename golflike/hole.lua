@@ -7,11 +7,11 @@ local subpattern = require('forma.subpattern')
 local primitives = require('forma.primitives')
 local pattern    = require('forma.pattern')
 local cell       = require('forma.cell')
-local log        = require('game.lib.log')
-local map        = require('game.map')
-local par        = require('game.par')
-local mapgen     = require('game.mapgen')
-local common     = require('game.common')
+local log        = require('golflike.lib.log')
+local map        = require('golflike.map')
+local par        = require('golflike.par')
+local mapgen     = require('golflike.mapgen')
+local common     = require('golflike.common')
 local hole     = {}
 
 local generators = {}

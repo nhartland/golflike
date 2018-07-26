@@ -1,7 +1,7 @@
 -- exitconf.lua
 -- game exit confirmation window
-local draw   = require('game.draw')
-local keymap = require('game.keymap')
+local draw   = require('golflike.draw')
+local keymap = require('golflike.keymap')
 local termio = require('term.io')
 local keys   = require('term.keys')
 local class  = require('30log')
@@ -23,7 +23,7 @@ function exitconf:control(gstate)
         gstate.terminate = true
         return true, true, nil
     elseif key == keymap.deny then
-        local aim = require('game.aim')
+        local aim = require('golflike.aim')
         return true, true, aim(gstate)
     end
 end

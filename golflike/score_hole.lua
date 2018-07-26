@@ -3,9 +3,9 @@
 -- Adds the current score to the scorecard, resets stroke count,
 -- and updates the competition
 local class       = require('30log')
-local message     = require('game.message')
-local transition  = require('game.transition')
-local competition = require("game.competition")
+local message     = require('golflike.message')
+local transition  = require('golflike.transition')
+local competition = require("golflike.competition")
 local score_hole  = class("score_hole")
 
 function score_hole:init() end

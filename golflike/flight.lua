@@ -1,12 +1,12 @@
 -- flight.lua
 -- State handling the flight of a ball
-local score_hole = require('game.score_hole')
-local message    = require('game.message')
-local map     = require('game.map')
-local draw    = require('game.draw')
-local termio  = require('term.io')
-local class   = require('30log')
-local flight  = class("flight")
+local score_hole = require('golflike.score_hole')
+local message    = require('golflike.message')
+local map        = require('golflike.map')
+local draw       = require('golflike.draw')
+local termio     = require('term.io')
+local class      = require('30log')
+local flight     = class("flight")
 
 function flight:init(startpos, trajectory, club)
     self.club         = club       -- Club used to initiate flight
@@ -54,7 +54,7 @@ function flight:control(gstate)
         return true, true, score_hole(gstate)
     elseif self.hazard == true then
         -- Encountered a hazard
-        local aim = require('game.aim')
+        local aim = require('golflike.aim')
         gstate:lose_ball() -- Ball lost to hazard
         local nballs = gstate:available_balls()
         if nballs == 0 then
@@ -69,7 +69,7 @@ function flight:control(gstate)
         end
     else
         -- If we've landed, return to aiming
-        local aim = require('game.aim')
+        local aim = require('golflike.aim')
         return true, true, aim(gstate)
     end
 end

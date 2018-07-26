@@ -2,7 +2,7 @@
 -- The state handling hole transitions
 -- Increments the hole number, and moves the player to the new tee.
 local class    = require('30log')
-local message  = require('game.message')
+local message  = require('golflike.message')
 local transition  = class("TransitionScreen")
 
 -- Perform transition to next hole
@@ -32,7 +32,7 @@ function transition:control(gstate)
         -- Print new hole message
         local msg = gstate:name() .. '\n'
         msg = msg .. "Hole ".. #gstate:get_scorecard() + 1 .. ", Par " .. #hole.opt_course
-        local aim = require('game.aim')
+        local aim = require('golflike.aim')
         return true, true, message(gstate, aim, msg)
     end
 end

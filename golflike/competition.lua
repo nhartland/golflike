@@ -3,13 +3,13 @@
 --
 -- Rivals should be: limited in number (so you can recognise them)
 -- reproducibly skilled (good players are good, bad player are bad)
-local utl    = require('game.util')
+local utl    = require('golflike.util')
 local colour = require('term.colour')
 
 local competition = {}
 
 -- List of possible surnames
-local all_surnames = require('game.surname_data')
+local all_surnames = require('golflike.surname_data')
 
 --- Generate a new rival
 -- Each rival has three properties

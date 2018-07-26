@@ -1,9 +1,9 @@
 --- message.lua
 -- A message and continue prompt. This can be used for most transitions, as it
 -- takes the next state element as an argument
-local utl    = require('game.util')
-local draw   = require('game.draw')
-local keymap = require('game.keymap')
+local utl    = require('golflike.util')
+local draw   = require('golflike.draw')
+local keymap = require('golflike.keymap')
 local termio = require('term.io')
 local keys   = require('term.keys')
 local colour = require('term.colour')
