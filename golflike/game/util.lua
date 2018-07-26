@@ -2,20 +2,6 @@
 -- General utilities
 local util = {}
 
---- Pop-and-swap for unordered lists.
--- @param lst input list.
--- @param t target to be removed from list.
--- @return true if target is found and removed, false if not
-function util.popandswap(lst, t)
-    for i=1,#lst,1 do
-        if lst[i] == t then
-            lst[i] = lst[#lst]
-            lst[#lst] = nil
-            return true
-        end
-    end
-    return false
-end
 
 -- Returns true if element e is present in list t, false otherwise
 function util.intable(e, t)
