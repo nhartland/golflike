@@ -1,12 +1,12 @@
 -- main.lua
 -- Game loop
-local common      = require('game.common')
-local competition = require('game.competition')
-local state       = require('game.state')
-local maprender   = require('state.maprender')
-local menu        = require('state.menu')
-local termio      = require('term.io')
-local log         = require('lib.log')
+local log         = require('golflike.lib.log')
+local common      = require('golflike.common')
+local competition = require('golflike.competition')
+local state       = require('golflike.state')
+local maprender   = require('golflike.maprender')
+local menu        = require('golflike.menu')
+local termio      = require('golfterm.io')
 
 local game = {}
 if love ~= nil then
