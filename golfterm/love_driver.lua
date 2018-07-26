@@ -20,7 +20,7 @@ local l2d = {
 
 --- Load rendering glyphs
 local glyphs = {}
-local glyphSprite = l2d.graphics.newImage('term/cp437.png')
+local glyphSprite = l2d.graphics.newImage('golfterm/cp437.png')
 for i=0,255 do
     local sx=(i%32)*9
     local sy=math.floor(i/32)*16

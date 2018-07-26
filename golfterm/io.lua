@@ -7,8 +7,8 @@ local colour = require(path.."colour")
 
 local driver
 if love ~= nil then
-driver = require("term.love_driver") else
-driver = require("term.lcurses_driver") end
+driver = require(path.."love_driver") else
+driver = require(path.."lcurses_driver") end
 
 -- Should convert worigin, wsize from tables to normal x,y numbers (rows/cols)
 local termio = {
