@@ -2,10 +2,10 @@
 -- game exit confirmation window
 local class  = require('30log')
 local path = (...):match("(.-)[^%.]+$")
+local draw   = require(path..'game.draw')
+local keymap = require(path..'game.keymap')
 local termio = require(path..'term.io')
 local keys   = require(path..'term.keys')
-local draw   = require(path..'draw')
-local keymap = require(path..'keymap')
 local exitconf = class("ExitConf")
 
 function exitconf:init(_) end

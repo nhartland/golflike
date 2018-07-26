@@ -3,7 +3,7 @@
 local class  = require('30log')
 local path = (...):match("(.-)[^%.]+$")
 local termio = require(path..'term.io')
-local draw   = require(path..'draw')
+local draw   = require(path..'game.draw')
 local maprender = class("maprender")
 
 function maprender:init() end

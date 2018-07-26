@@ -3,13 +3,13 @@
 local class  = require('30log')
 local cell   = require('forma.cell')
 local path = (...):match("(.-)[^%.]+$")
+local clubs  = require(path..'game.clubs')
+local map    = require(path..'game.map')
+local draw   = require(path..'game.draw')
 local termio = require(path..'term.io')
 local keys   = require(path..'term.keys')
 local colour = require(path..'term.colour')
-local clubs  = require(path..'clubs')
-local map    = require(path..'map')
-local draw   = require(path..'draw')
-local keymap = require(path..'keymap')
+local keymap = require(path..'game.keymap')
 local help = class("help")
 
 function help:init() end

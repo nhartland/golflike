@@ -2,11 +2,11 @@
 -- State handling the flight of a ball
 local class   = require('30log')
 local path = (...):match("(.-)[^%.]+$")
-local termio     = require(path..'term.io')
 local message    = require(path..'message')
 local score_hole = require(path..'score_hole')
-local map        = require(path..'map')
-local draw       = require(path..'draw')
+local map        = require(path..'game.map')
+local draw       = require(path..'game.draw')
+local termio     = require(path..'term.io')
 local flight     = class("flight")
 
 function flight:init(startpos, trajectory, club)
