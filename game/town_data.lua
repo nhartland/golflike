@@ -1,3 +1,5 @@
+-- English town names from:
+-- https://www.paulstenning.com/uk-towns-and-counties-list/
 local data = {
     "Ampthill",
     "Arlesey",

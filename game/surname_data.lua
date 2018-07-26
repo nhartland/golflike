@@ -1,3 +1,4 @@
+-- Name data from https://deron.meranda.us/data/ (CC0 1.0)
 local data = {
     "SMITH",
     "JOHNSON",

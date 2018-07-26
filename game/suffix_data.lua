@@ -1,3 +1,4 @@
+-- Club name extensions from wikipedia: Canadian golf courses
 local data = {
     "Bear Golf Club",
     "Birch Golf Club",

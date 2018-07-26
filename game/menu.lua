@@ -26,8 +26,8 @@ function menu:init(gstate)
     }
 
     -- Setup club name information
-    local towns      = require('data.towns')
-    local extensions = require('data.extensions')
+    local towns      = require('game.town_data')
+    local extensions = require('game.suffix_data')
     local markov_chain = markov.init(towns, 3)
 
     -- Generate course names

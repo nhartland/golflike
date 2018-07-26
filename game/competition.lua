@@ -9,7 +9,7 @@ local colour = require('term.colour')
 local competition = {}
 
 -- List of possible surnames
-local all_surnames = require('data.surnames')
+local all_surnames = require('game.surname_data')
 
 --- Generate a new rival
 -- Each rival has three properties

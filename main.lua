@@ -3,8 +3,8 @@
 local common      = require('game.common')
 local competition = require('game.competition')
 local state       = require('game.state')
-local maprender   = require('state.maprender')
-local menu        = require('state.menu')
+local maprender   = require('game.maprender')
+local menu        = require('game.menu')
 local termio      = require('term.io')
 local log         = require('lib.log')
 
