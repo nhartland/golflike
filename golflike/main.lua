@@ -1,13 +1,12 @@
 -- main.lua
 -- Game loop
-local path = (...):match("(.-)[^%.]+$")
-local common      = require(path..'game.common')
-local competition = require(path..'game.competition')
-local state       = require(path..'game.state')
-local maprender   = require(path..'maprender')
-local menu        = require(path..'menu')
-local termio      = require(path..'term.io')
-local log         = require(path..'lib.log')
+local common      = require('game.common')
+local competition = require('game.competition')
+local state       = require('game.state')
+local maprender   = require('state.maprender')
+local menu        = require('state.menu')
+local termio      = require('term.io')
+local log         = require('lib.log')
 
 local game = {}
 if love ~= nil then

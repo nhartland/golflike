@@ -1,14 +1,13 @@
 -- aim.lua
 -- State element for aiming, this handles most of the gameplay interation.
-local path = (...):match("(.-)[^%.]+$")
 local class      = require('30log')
 local cell       = require('forma.cell')
-local map        = require(path..'game.map')
-local draw       = require(path..'game.draw')
-local geometry   = require(path..'game.geometry')
-local clubs      = require(path..'game.clubs')
-local keymap     = require(path..'game.keymap')
-local termio     = require(path..'term.io')
+local map        = require('game.map')
+local draw       = require('game.draw')
+local geometry   = require('game.geometry')
+local clubs      = require('game.clubs')
+local keymap     = require('game.keymap')
+local termio     = require('term.io')
 local aim = class("Aim")
 
 function aim:init(gstate)
@@ -104,7 +103,7 @@ function aim:control(gstate)
     -- Quit if 10 over par
     if gstate:get_stroke_count() - #hole.opt_course == 9 then
         gstate.terminate=true
-        local message = require(path.."message")
+        local message = require("state.message")
         local text = "GAME OVER\n Retiring +9 over par"
         return true, true, message(gstate, nil, text)
     end
@@ -135,20 +134,20 @@ function aim:control(gstate)
         local target     = self.path_targets[math.random(#self.targets)]
         local trajectory = geometry.compute_trajectory(hole, club, gstate:ball_position(), target)
         gstate:increment_stroke_count()
-        local flight = require(path..'flight')
+        local flight = require('state.flight')
         return true, true, flight(gstate:ball_position(), trajectory, club)
     elseif input == keymap.help then
-        local help = require(path..'help')
+        local help = require('state.help')
         return true, false, help(self:current_club())
     elseif input == keymap.exit_game then
-        local exitconf = require(path..'exitconf')
+        local exitconf = require('state.exitconf')
         return true, true, exitconf(gstate)
     end
 
     -- Current standings
     if input == keymap.standings then
         local competition  = require("game.competition")
-        local message      = require(path.."message")
+        local message      = require("state.message")
         local text, tcolour = competition.get_standings_message(gstate:get_scorecard(),
                              gstate:get_rivals(), gstate:total_holes())
         return true, false, message(gstate, nil, text, tcolour, {keymap.standings})
@@ -156,7 +155,7 @@ function aim:control(gstate)
 
     -- Debug controls
     if input == keymap.debug_next  then
-        local score_hole = require(path.."score_hole")
+        local score_hole = require("state.score_hole")
         return true, true, score_hole(gstate)
     elseif input == keymap.debug_par then
         self.display_par = not self.display_par

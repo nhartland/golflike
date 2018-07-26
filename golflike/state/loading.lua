@@ -1,11 +1,11 @@
 --- loading.lua
 -- State to manage and display the loading of a course
+local transition = require('state.transition')
+local termio = require('term.io')
+local colour = require('term.colour')
+local hole   = require('game.hole')
+local common = require('game.common')
 local class  = require('30log')
-local path = (...):match("(.-)[^%.]+$")
-local termio = require(path..'term.io')
-local colour = require(path..'term.colour')
-local hole   = require(path..'game.hole')
-local common = require(path..'game.common')
 local loading = class("loading")
 
 -- Initialise RNG for loadstate
@@ -53,7 +53,6 @@ end
 
 function loading:control(gstate)
     if #gstate.course == gstate:total_holes() then
-        local transition = require(path..'transition')
         return true, true, transition(gstate, true)
     else
         return true, false, nil

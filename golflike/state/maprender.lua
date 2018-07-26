@@ -1,9 +1,9 @@
 -- maprender.lua
 -- This class renders the map and statuslines to screen.
+local aim    = require('state.aim')
+local termio = require('term.io')
+local draw   = require('game.draw')
 local class  = require('30log')
-local path = (...):match("(.-)[^%.]+$")
-local termio = require(path..'term.io')
-local draw   = require(path..'game.draw')
 local maprender = class("maprender")
 
 function maprender:init() end
@@ -26,7 +26,6 @@ function maprender:control(gstate)
         return true, true, nil
     end
     -- If not terminating, push an aim element onto the stack
-    local aim    = require(path..'aim')
     return true, false, aim(gstate)
 end
 
