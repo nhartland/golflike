@@ -2,7 +2,7 @@
 -- A wrapper for Ilya Kolbin's lcmwc.
 -- Implements multiple RNG streams and provides a
 -- closure-based interface that appears like math.random.
-local cmwc = require('lib.cmwc')
+local cmwc = require('game.lib.cmwc')
 
 local random = {
     generators = {}
