@@ -1,10 +1,9 @@
 --- par.lua
 -- Determination of par
-local path = (...):match("(.-)[^%.]+$")
 local bresenham = require('alg.bresenham')
 local astar	    = require('alg.astar')
+local clubs  	= require('game.clubs')
 local cell   	= require('forma.cell')
-local clubs  	= require(path..'clubs')
 local par = {}
 
 -- Scans all locations that can be made with the wood club from the origin.

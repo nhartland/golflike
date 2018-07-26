@@ -3,16 +3,15 @@
 -- calls various hole `generators` stored in `mapgen`. Once a hole is
 -- generated, a number of post-processing checks are performed here. If they
 -- pass, the hole is printed to the representation in `map` and returned.
-local path = (...):match("(.-)[^%.]+$")
 local subpattern = require('forma.subpattern')
 local primitives = require('forma.primitives')
 local pattern    = require('forma.pattern')
 local cell       = require('forma.cell')
 local log        = require('lib.log')
-local map        = require(path..'map')
-local par        = require(path..'par')
-local mapgen     = require(path..'mapgen')
-local common     = require(path..'common')
+local map        = require('game.map')
+local par        = require('game.par')
+local mapgen     = require('game.mapgen')
+local common     = require('game.common')
 local hole     = {}
 
 local generators = {}

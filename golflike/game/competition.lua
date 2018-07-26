@@ -3,8 +3,7 @@
 --
 -- Rivals should be: limited in number (so you can recognise them)
 -- reproducibly skilled (good players are good, bad player are bad)
-local path = (...):match("(.-)[^%.]+$")
-local utl    = require(path..'util')
+local utl    = require('game.util')
 local colour = require('term.colour')
 
 local competition = {}
