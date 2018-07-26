@@ -1,7 +1,7 @@
 --- par.lua
 -- Determination of par
-local bresenham = require('alg.bresenham')
-local astar	    = require('alg.astar')
+local bresenham = require('game.bresenham')
+local astar	    = require('game.astar')
 local clubs  	= require('game.clubs')
 local cell   	= require('forma.cell')
 local par = {}

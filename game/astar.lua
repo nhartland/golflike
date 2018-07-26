@@ -1,6 +1,6 @@
 -- astar.lua
 -- Basic implementation of a-star pathfinding
-local pqueue = require('alg.pqueue')
+local pqueue = require('game.pqueue')
 local astar = {}
 
 -- A-star pathfinding ---------------------------------------------------------------------------
