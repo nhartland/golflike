@@ -1,9 +1,9 @@
 -- main.lua
 -- Game loop
 local path = (...):match("(.-)[^%.]+$")
-local common      = require(path..'game.common')
-local competition = require(path..'game.competition')
-local state       = require(path..'game.state')
+local common      = require(path..'common')
+local competition = require(path..'competition')
+local state       = require(path..'state')
 local maprender   = require(path..'maprender')
 local menu        = require(path..'menu')
 local termio      = require(path..'term.io')

@@ -4,7 +4,7 @@
 -- and updates the competition
 local class       = require('30log')
 local path = (...):match("(.-)[^%.]+$")
-local competition = require(path..'game.competition')
+local competition = require(path..'competition')
 local score_hole  = class("score_hole")
 
 function score_hole:init() end

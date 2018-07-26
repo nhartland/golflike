@@ -7,9 +7,9 @@ local termio  = require(path..'term.io')
 local colour  = require(path..'term.colour')
 local keys    = require(path..'term.keys')
 local markov  = require(path..'alg.markov')
-local random  = require(path..'game.random')
-local common  = require(path..'game.common')
-local keymap  = require(path..'game.keymap')
+local random  = require(path..'random')
+local common  = require(path..'common')
+local keymap  = require(path..'keymap')
 local menu = class("menu")
 
 

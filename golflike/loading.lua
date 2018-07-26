@@ -4,8 +4,8 @@ local class  = require('30log')
 local path = (...):match("(.-)[^%.]+$")
 local termio = require(path..'term.io')
 local colour = require(path..'term.colour')
-local hole   = require(path..'game.hole')
-local common = require(path..'game.common')
+local hole   = require(path..'hole')
+local common = require(path..'common')
 local loading = class("loading")
 
 -- Initialise RNG for loadstate

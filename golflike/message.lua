@@ -3,9 +3,9 @@
 -- takes the next state element as an argument
 local class  = require('30log')
 local path = (...):match("(.-)[^%.]+$")
-local utl    = require(path..'game.util')
-local draw   = require(path..'game.draw')
-local keymap = require(path..'game.keymap')
+local utl    = require(path..'util')
+local draw   = require(path..'draw')
+local keymap = require(path..'keymap')
 local termio = require(path..'term.io')
 local keys   = require(path..'term.keys')
 local colour = require(path..'term.colour')

@@ -3,11 +3,11 @@
 local path = (...):match("(.-)[^%.]+$")
 local class      = require('30log')
 local cell       = require('forma.cell')
-local map        = require(path..'game.map')
-local draw       = require(path..'game.draw')
-local geometry   = require(path..'game.geometry')
-local clubs      = require(path..'game.clubs')
-local keymap     = require(path..'game.keymap')
+local map        = require(path..'map')
+local draw       = require(path..'draw')
+local geometry   = require(path..'geometry')
+local clubs      = require(path..'clubs')
+local keymap     = require(path..'keymap')
 local termio     = require(path..'term.io')
 local aim = class("Aim")
 
@@ -147,7 +147,7 @@ function aim:control(gstate)
 
     -- Current standings
     if input == keymap.standings then
-        local competition  = require("game.competition")
+        local competition  = require("competition")
         local message      = require(path.."message")
         local text, tcolour = competition.get_standings_message(gstate:get_scorecard(),
                              gstate:get_rivals(), gstate:total_holes())
