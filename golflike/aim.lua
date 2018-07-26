@@ -7,7 +7,7 @@ local draw       = require('golflike.draw')
 local geometry   = require('golflike.geometry')
 local clubs      = require('golflike.clubs')
 local keymap     = require('golflike.keymap')
-local termio     = require('term.io')
+local termio     = require('golfterm.io')
 local aim = class("Aim")
 
 function aim:init(gstate)

@@ -4,7 +4,7 @@
 -- Rivals should be: limited in number (so you can recognise them)
 -- reproducibly skilled (good players are good, bad player are bad)
 local utl    = require('golflike.util')
-local colour = require('term.colour')
+local colour = require('golfterm.colour')
 
 local competition = {}
 

@@ -2,9 +2,9 @@
 -- Game menu, for course selection
 local date    = require("date")
 local class   = require('30log')
-local termio  = require('term.io')
-local colour  = require('term.colour')
-local keys    = require('term.keys')
+local termio  = require('golfterm.io')
+local colour  = require('golfterm.colour')
+local keys    = require('golfterm.keys')
 local markov  = require('golflike.markov')
 local loading = require('golflike.loading')
 local random  = require('golflike.random')

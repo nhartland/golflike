@@ -1,7 +1,7 @@
 --- map.lua
 -- This contains the basic representation of the map and tiles
 local map = {}
-local colour = require("term.colour")
+local colour = require("golfterm.colour")
 
 -- List of tiles in the game
 -- Fields are mostly self-explanatory.

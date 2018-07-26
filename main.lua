@@ -6,7 +6,7 @@ local competition = require('golflike.competition')
 local state       = require('golflike.state')
 local maprender   = require('golflike.maprender')
 local menu        = require('golflike.menu')
-local termio      = require('term.io')
+local termio      = require('golfterm.io')
 
 local game = {}
 if love ~= nil then

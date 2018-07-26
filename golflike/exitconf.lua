@@ -1,10 +1,10 @@
 -- exitconf.lua
 -- game exit confirmation window
+local class  = require('30log')
 local draw   = require('golflike.draw')
 local keymap = require('golflike.keymap')
-local termio = require('term.io')
-local keys   = require('term.keys')
-local class  = require('30log')
+local termio = require('golfterm.io')
+local keys   = require('golfterm.keys')
 local exitconf = class("ExitConf")
 
 function exitconf:init(_) end

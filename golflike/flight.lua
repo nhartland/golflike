@@ -1,11 +1,11 @@
 -- flight.lua
 -- State handling the flight of a ball
+local class      = require('30log')
 local score_hole = require('golflike.score_hole')
 local message    = require('golflike.message')
 local map        = require('golflike.map')
 local draw       = require('golflike.draw')
-local termio     = require('term.io')
-local class      = require('30log')
+local termio     = require('golfterm.io')
 local flight     = class("flight")
 
 function flight:init(startpos, trajectory, club)

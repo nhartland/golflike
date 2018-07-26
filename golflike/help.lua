@@ -6,9 +6,9 @@ local clubs  = require('golflike.clubs')
 local map    = require('golflike.map')
 local draw   = require('golflike.draw')
 local keymap = require('golflike.keymap')
-local termio = require('term.io')
-local keys   = require('term.keys')
-local colour = require('term.colour')
+local termio = require('golfterm.io')
+local keys   = require('golfterm.keys')
+local colour = require('golfterm.colour')
 local help = class("help")
 
 function help:init() end

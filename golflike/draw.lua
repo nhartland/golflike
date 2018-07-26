@@ -3,8 +3,8 @@
 local common      = require("golflike.common")
 local competition = require('golflike.competition')
 local map         = require("golflike.map")
-local termio      = require("term.io")
-local colour      = require('term.colour')
+local termio      = require("golfterm.io")
+local colour      = require('golfterm.colour')
 
 local draw = {}
 

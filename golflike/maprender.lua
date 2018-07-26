@@ -1,7 +1,7 @@
 -- maprender.lua
 -- This class renders the map and statuslines to screen.
 local class  = require('30log')
-local termio = require('term.io')
+local termio = require('golfterm.io')
 local aim    = require('golflike.aim')
 local draw   = require('golflike.draw')
 local maprender = class("maprender")

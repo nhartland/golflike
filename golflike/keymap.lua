@@ -1,6 +1,6 @@
 --- Game key mappings
 local keymap = {}
-local keys = require("term.keys")
+local keys = require("golfterm.keys")
 
 -- General key mappings
 keymap.continue  = keys.SPACE

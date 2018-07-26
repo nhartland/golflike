@@ -4,8 +4,8 @@ local class      = require('30log')
 local transition = require('golflike.transition')
 local hole       = require('golflike.hole')
 local common     = require('golflike.common')
-local termio     = require('term.io')
-local colour     = require('term.colour')
+local termio     = require('golfterm.io')
+local colour     = require('golfterm.colour')
 local loading    = class("loading")
 
 -- Initialise RNG for loadstate
