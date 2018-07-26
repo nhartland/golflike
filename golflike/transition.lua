@@ -1,8 +1,8 @@
 -- transition.lua
 -- The state handling hole transitions
 -- Increments the hole number, and moves the player to the new tee.
-local message  = require('state.message')
 local class    = require('30log')
+local path = (...):match("(.-)[^%.]+$")
 local transition  = class("TransitionScreen")
 
 -- Perform transition to next hole
@@ -32,7 +32,9 @@ function transition:control(gstate)
         -- Print new hole message
         local msg = gstate:name() .. '\n'
         msg = msg .. "Hole ".. #gstate:get_scorecard() + 1 .. ", Par " .. #hole.opt_course
-        return true, true, message(gstate, require('state.aim'), msg)
+        local message  = require(path..'message')
+        local aim      = require(path..'aim')
+        return true, true, message(gstate, aim, msg)
     end
 end
 

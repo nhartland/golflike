@@ -2,10 +2,9 @@
 -- This class handles the scoring of a hole
 -- Adds the current score to the scorecard, resets stroke count,
 -- and updates the competition
-local message = require('state.message')
-local transition  = require('state.transition')
-local competition = require("game.competition")
 local class       = require('30log')
+local path = (...):match("(.-)[^%.]+$")
+local competition = require(path..'game.competition')
 local score_hole  = class("score_hole")
 
 function score_hole:init() end
@@ -32,6 +31,8 @@ function score_hole:control(gstate)
     else
         text[1] = "Hole complete!"
     end
+    local message = require(path..'message')
+    local transition  = require(path..'transition')
     return true, true, message(gstate, transition, text, tcolour)
 end
 

@@ -1,15 +1,15 @@
 --- menu.lua
 -- Game menu, for course selection
-local termio  = require('term.io')
-local colour  = require('term.colour')
-local keys    = require('term.keys')
-local markov  = require('alg.markov')
-local loading = require('state.loading')
-local random  = require('game.random')
-local common  = require('game.common')
-local keymap  = require('game.keymap')
 local date    = require("date")
 local class   = require('30log')
+local path = (...):match("(.-)[^%.]+$")
+local termio  = require(path..'term.io')
+local colour  = require(path..'term.colour')
+local keys    = require(path..'term.keys')
+local markov  = require(path..'alg.markov')
+local random  = require(path..'game.random')
+local common  = require(path..'game.common')
+local keymap  = require(path..'game.keymap')
 local menu = class("menu")
 
 
@@ -26,8 +26,8 @@ function menu:init(gstate)
     }
 
     -- Setup club name information
-    local towns      = require('data.towns')
-    local extensions = require('data.extensions')
+    local towns      = require(path..'data.towns')
+    local extensions = require(path..'data.extensions')
     local markov_chain = markov.init(towns, 3)
 
     -- Generate course names
@@ -77,6 +77,7 @@ function menu:control(gstate)
             local course_name = self.courses[k].name
             gstate:init(course_name)
             local rng = random.get_generator(course_type)
+            local loading = require(path..'loading')
             return true, true, loading(gstate, rng)
         end
     end

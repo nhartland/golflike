@@ -1,10 +1,11 @@
 -- exitconf.lua
 -- game exit confirmation window
-local draw   = require('game.draw')
-local keymap = require('game.keymap')
-local termio = require('term.io')
-local keys   = require('term.keys')
 local class  = require('30log')
+local path = (...):match("(.-)[^%.]+$")
+local draw   = require(path..'game.draw')
+local keymap = require(path..'game.keymap')
+local termio = require(path..'term.io')
+local keys   = require(path..'term.keys')
 local exitconf = class("ExitConf")
 
 function exitconf:init(_) end
@@ -23,7 +24,7 @@ function exitconf:control(gstate)
         gstate.terminate = true
         return true, true, nil
     elseif key == keymap.deny then
-        local aim = require('state.aim')
+        local aim = require(path..'aim')
         return true, true, aim(gstate)
     end
 end
