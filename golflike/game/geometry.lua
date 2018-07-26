@@ -1,10 +1,11 @@
 --- geometry.lua
 -- This module computes ball trajectories and aiming arcs
+local path = (...):match("(.-)[^%.]+$")
+local clubs      = require(path..'clubs')
+local map        = require(path.."map")
 local primitives = require('forma.primitives')
 local bresenham  = require('alg.bresenham')
-local clubs      = require('game.clubs')
 local cell       = require('forma.cell')
-local map        = require("game.map")
 local geometry = {}
 
 -- Get the range for using a club at one point

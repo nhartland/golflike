@@ -1,8 +1,9 @@
 --- draw.lua
 -- Handling of terminal I/O
-local common      = require("game.common")
-local competition = require('game.competition')
-local map         = require("game.map")
+local path = (...):match("(.-)[^%.]+$")
+local common      = require(path.."common")
+local competition = require(path..'competition')
+local map         = require(path.."map")
 local termio      = require("term.io")
 local colour      = require('term.colour')
 

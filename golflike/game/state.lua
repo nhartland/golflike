@@ -1,6 +1,7 @@
 --- state.lua
 -- class containing global game state
-local competition = require('game.competition')
+local path = (...):match("(.-)[^%.]+$")
+local competition = require(path..'competition')
 local cell        = require('forma.cell')
 local class       = require('30log')
 local state       = class("GameState", {})

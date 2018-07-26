@@ -1,12 +1,12 @@
 --- standard.lua
 -- Standard map layout
 -- Common to `classic` `links` and `forest`
-
+local path = (...):match("(.-)[^%.]+$")
 local neighbourhood = require('forma.neighbourhood')
 local subpattern    = require('forma.subpattern')
 local automata      = require('forma.automata')
 local cell          = require('forma.cell')
-local utl           = require('game.util')
+local utl           = require(path..'util')
 
 -- Performs a uniform sampling of the domain
 local function uniform(seedfrac)
