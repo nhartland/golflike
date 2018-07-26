@@ -10,13 +10,14 @@ local cell       = require('forma.cell')
 local log        = require('lib.log')
 local map        = require('game.map')
 local par        = require('game.par')
+local mapgen     = require('game.mapgen')
 local common     = require('game.common')
 local hole     = {}
 
 local generators = {}
-table.insert(generators, {name = "links",   gen = require('mapgen.links')})
-table.insert(generators, {name = "forest",  gen = require('mapgen.forest')})
-table.insert(generators, {name = "classic", gen = require('mapgen.classic')})
+table.insert(generators, {name = "links",   gen = mapgen('Bunker')})
+table.insert(generators, {name = "forest",  gen = mapgen('Tree')})
+table.insert(generators, {name = "classic", gen = mapgen('Water')})
 
 -- Check pattern specification for irregularities.
 -- Checks a) That all specified patters correspond to map tiles
