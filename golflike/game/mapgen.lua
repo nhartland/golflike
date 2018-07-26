@@ -1,25 +1,12 @@
 --- standard.lua
 -- Standard map layout
 -- Common to `classic` `links` and `forest`
+local path = (...):match("(.-)[^%.]+$")
 local neighbourhood = require('forma.neighbourhood')
 local subpattern    = require('forma.subpattern')
 local automata      = require('forma.automata')
 local cell          = require('forma.cell')
-
---- Pop-and-swap for unordered lists.
--- @param lst input list.
--- @param t target to be removed from list.
--- @return true if target is found and removed, false if not
-local function popandswap(lst, t)
-    for i=1,#lst,1 do
-        if lst[i] == t then
-            lst[i] = lst[#lst]
-            lst[#lst] = nil
-            return true
-        end
-    end
-    return false
-end
+local utl           = require(path..'util')
 
 -- Performs a uniform sampling of the domain
 local function uniform(seedfrac)
@@ -74,9 +61,9 @@ return function(base)
         local patternSpec = {}
 
         local hazards = {"Water", "Tree", "Bunker"}
-        assert(popandswap(hazards, base)) -- Remove base type from hazards
-        local hazard1 = hazards[rng(#hazards)] assert(popandswap(hazards, hazard1))
-        local hazard2 = hazards[rng(#hazards)] assert(popandswap(hazards, hazard2))
+        assert(utl.popandswap(hazards, base)) -- Remove base type from hazards
+        local hazard1 = hazards[rng(#hazards)] assert(utl.popandswap(hazards, hazard1))
+        local hazard2 = hazards[rng(#hazards)] assert(utl.popandswap(hazards, hazard2))
 
         patternSpec[base]      = domain
         patternSpec["Rough"]   = cellular_automata(rng, patternSpec[base], "B5678/S345678", uniform(0.5))
