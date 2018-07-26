@@ -1,12 +1,9 @@
 -- plt.lua
---
+-- Pure lua rendering backend
 -- Code here based on `plterm`, but *heavily* modified
---
-
-------------------------------------------------------------------------
-
-local colour = require('term.colour')
-local keys   = require('term.keys')
+local path = (...):match("(.-)[^%.]+$")
+local colour = require(path..'colour')
+local keys   = require(path..'keys')
 
 local plt = {
     tput  = "tput",

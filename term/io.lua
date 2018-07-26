@@ -2,8 +2,8 @@
 -- Wrapper for various terminal I/O drivers.
 -- Switches between a `love` renderer and an lcurses renderer
 -- depending on the availability of the global `love` table
-
-local colour = require("term.colour")
+local path = (...):match("(.-)[^%.]+$")
+local colour = require(path.."colour")
 
 local driver
 if love ~= nil then

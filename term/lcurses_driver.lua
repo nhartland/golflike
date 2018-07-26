@@ -2,9 +2,9 @@
 -- Underlying terminal driver via lcurses.
 -- This mostly translates term.io calls to ncurses calls,
 -- but also abstracts away the ncurses 'color_pairs'.
-
+local path = (...):match("(.-)[^%.]+$")
 local curses = require("curses")
-local keys = require('term.keys')
+local keys = require(path..'keys')
 
 local lc_driver = {
     keyMap = {},  -- Maps ncurses codes to term.key codes

@@ -1,9 +1,9 @@
 --- love2d rendering backend
 -- Based in large part on the rotLove renderer, but heavily modified into
 -- a lower-level driver
-
-local colour = require('term.colour')
-local keys   = require('term.keys')
+local path = (...):match("(.-)[^%.]+$")
+local colour = require(path..'colour')
+local keys   = require(path..'keys')
 
 local scale = 1.0 -- Global scale factor
 
