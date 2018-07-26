@@ -1,7 +1,6 @@
 -- pqueue.lua
 -- A simple priority queue implementation
 -- Based on: Luis Carvalho, http://lua-users.org/lists/lua-l/2007-07/msg00482.html
-
 local pqueue = {}
 
 -- Push a new key 'k' onto heap 'h' with weight-value 'v'
