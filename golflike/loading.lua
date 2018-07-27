@@ -29,10 +29,6 @@ function loading:tick(gstate)
 end
 
 function loading:render(gstate)
-    local xo = 22
-    for k,v in ipairs(common.banner) do
-        termio.putstr(xo, k-1, v, colour.green, colour.black)
-    end
     local progressbar = '['
     for i=1,gstate:total_holes(),1 do
         if i <= #gstate.course then progressbar = progressbar .. '#'
