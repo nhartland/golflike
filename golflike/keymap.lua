@@ -22,7 +22,9 @@ keymap.standings  = keys.s
 keymap.exit_game  = keys.x
 
 -- Debug keys
-keymap.debug_next = keys.w -- Skip to next hole
-keymap.debug_par  = keys.p -- Switch on par rendering
+keymap.debug_next = keys.NULL -- Skip to next hole
+keymap.debug_par  = keys.NULL -- Switch on par rendering
+--keymap.debug_next = keys.w -- Skip to next hole
+--keymap.debug_par  = keys.p -- Switch on par rendering
 
 return keymap
