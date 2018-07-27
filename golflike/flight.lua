@@ -39,7 +39,7 @@ end
 function flight:render(gstate)
     local hole = gstate:current_hole()
     assert(hole ~= nil, "flight:render encountered a nil map")
-    draw.trajectory (hole, self.path_history)
+    draw.trajectory (hole, self.path_history, self.club.trchar)
     draw.ball(hole, gstate:ball_position())
     draw.rightstatus("Ball in flight")
 end

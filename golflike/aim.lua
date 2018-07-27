@@ -74,7 +74,7 @@ function aim:render(gstate)
 
     -- Draw aiming UI elements
     --draw.target      (hole, self.path_targets)
-    draw.trajectory  (hole, self.trj)
+    draw.trajectory  (hole, self.trj, club.trchar)
     draw.target      (hole, self.targets)
     draw.ball        (hole, gstate:ball_position())
 
@@ -89,7 +89,7 @@ function aim:render(gstate)
             local st  = hole.opt_course[i]
             local fn  = hole.opt_course[i+1]
             local trj = geometry.compute_trajectory(hole, club, fn, st)
-            draw.trajectory(hole, trj)
+            draw.trajectory(hole, trj, '%')
         end
     end
 end

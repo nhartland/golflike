@@ -2,11 +2,11 @@
 -- Information on the clubs in the game
 local clubs = {}
 
-clubs[1] = {prefix = "", name = "Putter", 	range = 5,  accuracy = 1, kind = "ground"}
-clubs[2] = {prefix = "", name = "Wedge", 	range = 10, accuracy = 2, kind = "air"}
-clubs[3] = {prefix = "", name = "Iron",  	range = 20, accuracy = 3, kind = "air"}
-clubs[4] = {prefix = "", name = "Wood", 	range = 30, accuracy = 4, kind = "air"}
-clubs[5] = {prefix = "", name = "Driver", 	range = 40, accuracy = 5, kind = "air"}
+clubs[1] = {prefix = "", name = "Putter", 	range = 5,  accuracy = 1, kind = "ground", trchar = '-'}
+clubs[2] = {prefix = "", name = "Wedge", 	range = 10, accuracy = 2, kind = "air",    trchar = '^'}
+clubs[3] = {prefix = "", name = "Iron",  	range = 20, accuracy = 3, kind = "air",    trchar = '^'}
+clubs[4] = {prefix = "", name = "Wood", 	range = 30, accuracy = 4, kind = "air",    trchar = '^'}
+clubs[5] = {prefix = "", name = "Driver", 	range = 40, accuracy = 5, kind = "air",    trchar = '^'}
 
 -- Bonuses/Penalties for certain terrain
 clubs[1].tile_bonus = { Rough = -2,  Bunker  = -4,  Fairway = 2 } -- Putter

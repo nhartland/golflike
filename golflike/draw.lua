@@ -97,12 +97,11 @@ function draw.target(hole, target)
 end
 
 -- Draw the planned trajectory for aiming
-function draw.trajectory(hole, trajectory)
+function draw.trajectory(hole, trajectory, char)
     for itrj = 1, #trajectory, 1 do
         local vtrj = trajectory[itrj]
         if in_game_bounds(vtrj) then
             local tile = map.get(hole, vtrj.x, vtrj.y)
-            local char = (itrj == #trajectory) and 'X' or '-'
             termio.putchar(vtrj.x, vtrj.y+1, char, colour.red, tile.bg)
         end
     end
