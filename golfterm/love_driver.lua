@@ -29,11 +29,18 @@ for i=0,255 do
                                    glyphSprite:getHeight())
 end
 
--- Special character keymap
+-- General keymap
 local keymap = {}
 keymap["?"] = keys.QUESTION
 keymap[" "] = keys.SPACE
-keymap["return"] = keys.RETURN
+
+-- Special character keymap
+local s_keymap = {}
+s_keymap["return"] = keys.RETURN
+s_keymap["up"]     = keys.UP
+s_keymap["down"]   = keys.DOWN
+s_keymap["left"]   = keys.LEFT
+s_keymap["right"]  = keys.RIGHT
 
 -- ColourMap: Working with 16 colours atm
 local colourmap = {}
@@ -72,8 +79,7 @@ end
 
 -- Handle special characters
 function love.keypressed( key )
-    -- Only handles return for now
-    if key == "return" then
+    if s_keymap[key] ~= nil then
         table.insert(l2d.keybuf, key)
     end
 end
@@ -143,6 +149,8 @@ function l2d.getInput()
        local keypop = table.remove(l2d.keybuf)
        if keymap[keypop] ~= nil then
            return keymap[keypop]
+       elseif s_keymap[keypop] ~= nil then
+           return s_keymap[keypop]
        else
            return keys[keypop]
        end
