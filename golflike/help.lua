@@ -31,7 +31,7 @@ end
 
 function help:render(_)
     -- Length in y of the help screen
-    local helpscreen_y_size = 10
+    local helpscreen_y_size = 14
     local helpscreen_y_origin = math.floor((termio.wsize.y - helpscreen_y_size)/2)
 
     -- Fill in background of help screen
@@ -45,10 +45,21 @@ function help:render(_)
     self:render_key(     cell.new(30,helpscreen_y_origin))
     self:render_controls(cell.new(45,helpscreen_y_origin))
     self:render_uitips()
+    self:render_gametips(cell.new(2, helpscreen_y_origin+11))
+
 
     -- Print continue message
     local continue   = " press "..keys.findKey(keymap.continue).." to continue "
     draw.rightstatus(continue)
+end
+
+-- Render tips
+function help:render_gametips(origin)
+    local tip1 = "Holes can be scored by either a direct landing, or putting over the hole"
+    local tip2 = "Make use of precision aim (shift + club up/down)"
+    termio.centre_justify(origin.y+0,"---TIPS---",  colour.white, colour.black)
+    termio.centre_justify(origin.y+1,  tip1,  colour.green, colour.black)
+    termio.centre_justify(origin.y+2,tip2,  colour.green, colour.black)
 end
 
 -- Render the map key
