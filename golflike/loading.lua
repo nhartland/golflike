@@ -16,18 +16,31 @@ function loading:init(gstate, rng)
     self.firsttick = true
 end
 
+-- Get the map type for the hole
+local function getmaptype(ihole, nholes)
+    local maptype = "forest"
+    if ihole > 2*nholes/3 then
+        maptype = "links"
+    elseif ihole > nholes/3 then
+        maptype = "classic"
+    end
+    return maptype
+end
+
 function loading:tick(gstate)
     if self.firsttick == true then
         self.firsttick = false
         return
     end
+    -- Required map type
+    local mt = getmaptype(#gstate.course+1, gstate:total_holes())
     -- The loading tick generates new holes for a course
     if #gstate.course < gstate:total_holes() then
         local ite = 0
         local new_hole
         repeat
             ite = ite + 1
-            new_hole = hole.new(self.rng)
+            new_hole = hole.new(self.rng, mt)
         until new_hole ~= nil or ite > 10
         table.insert(gstate.course, new_hole)
     end

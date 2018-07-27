@@ -14,10 +14,11 @@ local mapgen     = require('golflike.mapgen')
 local common     = require('golflike.common')
 local hole     = {}
 
-local generators = {}
-table.insert(generators, {name = "links",   gen = mapgen('Bunker')})
-table.insert(generators, {name = "forest",  gen = mapgen('Tree')})
-table.insert(generators, {name = "classic", gen = mapgen('Water')})
+local generators = {
+    links   = mapgen('Bunker'),
+    classic = mapgen('Water'),
+    forest  = mapgen('Tree'),
+}
 
 -- Check pattern specification for irregularities.
 -- Checks a) That all specified patters correspond to map tiles
@@ -174,7 +175,7 @@ function hole.process(patternSpec)
     patternSpec["Fairway"] = patternSpec["Fairway"] - ( patternSpec["Hole"] + patternSpec["Tee"] )
 
     -- Verify pattern integrity
-    if verify_patterns(patternSpec)    == false then
+    if verify_patterns(patternSpec) == false then
         assert("Fatal error, patterns unverifiable")
         return nil
     end
@@ -202,11 +203,11 @@ end
 -- in the form of a list of `forma.patterns` indexed by tile type.
 -- If the specification passed processing, returns the new map,
 -- otherwise returns `nil`.
-function hole.new(rng)
-    local generator = generators[rng(#generators)]
-    log.debug("Generating new map: " .. generator.name)
+function hole.new(rng, mapname)
+    local generator = generators[mapname]
+    log.debug("Generating new map: " .. mapname)
     local domain = primitives.square(common.mapsize_x, common.mapsize_y)
-    local newmap = generator.gen(domain, rng)
+    local newmap = generator(domain, rng)
     local processed = hole.process(newmap)
     if processed ~= nil then
         log.info("Map successfully generated")
