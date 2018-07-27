@@ -73,20 +73,27 @@ function competition.rank(player_scorecard, rival_list)
     for _,v in ipairs(rival_list) do table.insert(merged_list, v) end
 
     -- Sort players by score
-    local scoresort = function(a,b) return
-        utl.sum(a.scorecard) < utl.sum(b.scorecard) end
-        table.sort(merged_list, scoresort)
-
-        -- Work out standing of the player
-        local pl_standing
-        for i, player in ipairs(merged_list) do
-            if player.name == "PLAYER" then
-                pl_standing = i
-            end
+    local scoresort = function(a,b)
+        local suma = utl.sum(a.scorecard)
+        local sumb = utl.sum(b.scorecard)
+        if suma == sumb then
+            return a.name == "PLAYER"
+        else
+            return suma < sumb
         end
-
-        return merged_list, pl_standing
     end
+    table.sort(merged_list, scoresort)
+
+    -- Work out standing of the player
+    local pl_standing
+    for i, player in ipairs(merged_list) do
+        if player.name == "PLAYER" then
+            pl_standing = i
+        end
+    end
+
+    return merged_list, pl_standing
+end
 
 -- Render a scorecard to a string
 function competition.get_scorestring(scorecard, nholes)
@@ -126,11 +133,11 @@ function competition.get_standings_message(player_scorecard, rival_list, nholes)
     local text, colours = {}, {}
     table.insert(text, " - COMPETITION STANDINGS - ") table.insert(colours, colour.b_red)
     if #player_scorecard == nholes then
-         table.insert(text, "You finish in " .. pl_standing .. " place")
-         table.insert(colours, colour.green)
+        table.insert(text, "You finish in " .. pl_standing .. " place")
+        table.insert(colours, colour.green)
     else
         table.insert(text, "You are in " .. pl_standing .. " place")
-         table.insert(colours, colour.green)
+        table.insert(colours, colour.green)
     end
 
     table.insert(text, "")
