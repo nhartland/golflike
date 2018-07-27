@@ -13,9 +13,14 @@ function loading:init(gstate, rng)
     self.wheel = {'|','/','-','\\'}
     self.wheelpos = 1
     self.rng = rng
+    self.firsttick = true
 end
 
 function loading:tick(gstate)
+    if self.firsttick == true then
+        self.firsttick = false
+        return
+    end
     -- The loading tick generates new holes for a course
     if #gstate.course < gstate:total_holes() then
         local ite = 0
