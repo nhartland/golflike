@@ -6,7 +6,10 @@ source = {
 
 description = {
    summary = "A golf roguelike",
-   detailed = [[ ]],
+   detailed = [[ golflike is an attempt at making a coffee-break golf-themed
+   roguelike. It features a randomly generated 9-hole course, with three
+   different environment themes. Games are very short, mostly taking less than
+   ten minutes.]],
    homepage = "https://github.com/nhartland/golflike",
    license = "MIT"
 }
