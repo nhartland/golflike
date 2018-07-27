@@ -24,8 +24,17 @@ rm golflike_win32/readme.txt
 
 #Cleanup
 rm *.zip
+
+# Setup final archives
 zip -ry golflike_macos.zip golflike.app
 zip -ry golflike_win32.zip golflike_win32
+
+# Copy to release dir
+mkdir release
+mv *.zip release
+mv *.love release
+
+#Cleanupv2
 rm -rf golflike.app
 rm -rf golflike_win32
 #loverocks purge
