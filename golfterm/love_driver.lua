@@ -41,6 +41,11 @@ s_keymap["up"]     = keys.UP
 s_keymap["down"]   = keys.DOWN
 s_keymap["left"]   = keys.LEFT
 s_keymap["right"]  = keys.RIGHT
+-- Shift + arrows
+s_keymap["UP"]     = keys.SUP
+s_keymap["DOWN"]   = keys.SDOWN
+s_keymap["LEFT"]   = keys.SLEFT
+s_keymap["RIGHT"]  = keys.SRIGHT
 
 -- ColourMap: Working with 16 colours atm
 local colourmap = {}
@@ -77,8 +82,13 @@ function love.textinput( key )
     table.insert(l2d.keybuf, key)
 end
 
+local function shiftkey()
+    return (love.keyboard.isDown('lshift') or love.keyboard.isDown('rshift'))
+end
+
 -- Handle special characters
 function love.keypressed( key )
+    if shiftkey() == true then key = key:upper() end
     if s_keymap[key] ~= nil then
         table.insert(l2d.keybuf, key)
     end
