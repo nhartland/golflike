@@ -8,19 +8,27 @@ For those who like their golf *procedurally generated*.
 features a randomly generated 9-hole course, with three different environment
 themes. Games are very short, mostly taking less than ten minutes.
 
+<p align="center">
+<b>Download</b>
+<a href="https://github.com/nhartland/golflike/releases/download/v0.5b/golflike_0_5b_macos.zip">[macos]</a>
+<a href="https://github.com/nhartland/golflike/releases/download/v0.5b/golflike_0_5b_win.zip">[windows]</a>
+<a href="https://github.com/nhartland/golflike/releases/download/v0.5b/golflike_0_5b.love">[linux]</a>
+</p>
 
-**Very much a WIP**
+Löve **golflike** packages for macos, Windows and Linux can be downloaded from the releases page or the above links.
 
-Getting the game
-----------------
+Setup from source
+-----------------
 
-**golflike** can be played either in a terminal or as a Löve application.
-Note the terminal version uses the standard 16-colour palette of your terminal.
+To run **golflike** from source, you will need a recent (5.1+) Lua or LuaJIT installation and the following LuaRocks packages:
 
-Terminal **golflike** can be obtained via LuaRocks:
+ - date >= 2.1.2
+ - 30log >= 1.3.0
+ - forma >= 0.2
+ - lcurses >= 9.0.0
 
-```Shell
-    luarocks install golflike
+With these dependencies, terminal **golflike** can be run with
+```Shell 
+    lua(jit) main.lua
 ```
 
-Löve **golflike** can be downloaded from the releases page.
