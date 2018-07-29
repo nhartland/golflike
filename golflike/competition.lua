@@ -16,13 +16,13 @@ local all_surnames = require('golflike.surname_data')
 -- a) Their name
 -- b) Their skill level (maximum shots over par)
 -- c) Their scorecard (identical as to player's scorecard)
-local function get_name(rng)
+local function get_name(id, rng)
     local surname = all_surnames[rng.random(#all_surnames)]:lower()
     surname = surname:sub(1,1):upper() .. surname:sub(2)
     local surname_novowels = surname:gsub('[aeiou]','')
     local idx = 471 % #surname_novowels + 1
     local skill = (28621*idx + 1194) % 5 + 1
-    return  {name = surname, skill = skill, scorecard = {}}
+    return  {id = id, name = surname, skill = skill, scorecard = {}}
 end
 
 --- Generate a set of rivals
@@ -34,7 +34,7 @@ function competition.get_rivals(n_rivals, rng)
     "number of rivals must be greater than 0 and less than 20")
     local field = {}
     repeat
-        local new_rival = get_name(rng)
+        local new_rival = get_name(#field, rng)
         local found = false
         for _, old_rival in ipairs(field) do
             if old_rival.name == new_rival.name then
@@ -69,7 +69,8 @@ end
 --- Return a sorted list of the current players by score, and the player's standaing
 function competition.rank(player_scorecard, rival_list)
     -- Form a merged list of player and rivals
-    local merged_list = {{name="PLAYER", scorecard=player_scorecard}}
+    -- The id is used to break ties in the ranking: the player always has the lowest id (-1)
+    local merged_list = {{id=-1, name="PLAYER", scorecard=player_scorecard}}
     for _,v in ipairs(rival_list) do
         assert(type(v.scorecard) == 'table', "Non-table scorecard: " .. type(v.scorecard) ..' ' ..v.name)
         table.insert(merged_list, v)
@@ -82,15 +83,9 @@ function competition.rank(player_scorecard, rival_list)
         assert(type(suma) == 'number', "scoresorta: non-number value " .. suma .. ' ' .. a.name)
         assert(type(sumb) == 'number', "scoresortb: non-number value " .. suma .. ' ' .. a.name)
         if suma == sumb then
-            if (a.name == "PLAYER") then
-                -- Always rank the player first in a tie
-                return true
-            else
-                -- No change required
-                return false
-            end
+            return a.id < b.id
         else
-            return (suma < sumb)
+            return suma < sumb
         end
     end
     table.sort(merged_list, scoresort)
