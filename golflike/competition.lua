@@ -70,16 +70,21 @@ end
 function competition.rank(player_scorecard, rival_list)
     -- Form a merged list of player and rivals
     local merged_list = {{name="PLAYER", scorecard=player_scorecard}}
-    for _,v in ipairs(rival_list) do table.insert(merged_list, v) end
+    for _,v in ipairs(rival_list) do
+        assert(type(v.scorecard) == 'table', "Non-table scorecard: " .. type(v.scorecard) ..' ' ..v.name)
+        table.insert(merged_list, v)
+    end
 
     -- Sort players by score
     local scoresort = function(a,b)
         local suma = utl.sum(a.scorecard)
         local sumb = utl.sum(b.scorecard)
+        assert(type(suma) == 'number', "scoresorta: non-number value " .. suma .. ' ' .. a.name)
+        assert(type(sumb) == 'number', "scoresortb: non-number value " .. suma .. ' ' .. a.name)
         if suma == sumb then
-            return a.name == "PLAYER"
+            return (a.name == "PLAYER")
         else
-            return suma < sumb
+            return (suma < sumb)
         end
     end
     table.sort(merged_list, scoresort)
