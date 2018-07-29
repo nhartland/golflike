@@ -88,9 +88,9 @@ function draw.target(hole, target)
         if in_game_bounds(vtarget) then
             local tile = map.get(hole, vtarget.x, vtarget.y)
             if tile.block.air == false then
-                termio.putchar(vtarget.x, vtarget.y+1, '=', colour.b_magenta, tile.bg)
+                termio.putchar(vtarget.x, vtarget.y+1, '=', colour.red, tile.bg)
             else
-                termio.putchar(vtarget.x, vtarget.y+1, tile.char, colour.b_magenta, tile.bg)
+                termio.putchar(vtarget.x, vtarget.y+1, tile.char, colour.magenta, tile.bg)
             end
         end
     end
