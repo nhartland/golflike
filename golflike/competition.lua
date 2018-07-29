@@ -82,7 +82,13 @@ function competition.rank(player_scorecard, rival_list)
         assert(type(suma) == 'number', "scoresorta: non-number value " .. suma .. ' ' .. a.name)
         assert(type(sumb) == 'number', "scoresortb: non-number value " .. suma .. ' ' .. a.name)
         if suma == sumb then
-            return (a.name == "PLAYER")
+            if (a.name == "PLAYER") then
+                -- Always rank the player first in a tie
+                return true
+            else
+                -- No change required
+                return false
+            end
         else
             return (suma < sumb)
         end
