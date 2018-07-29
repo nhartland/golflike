@@ -17,6 +17,15 @@ themes. Games are very short, mostly taking less than ten minutes.
 
 Löve **golflike** packages for macos, Windows and Linux can be downloaded from the releases page or the above links.
 
+Terminal installation
+---------------------
+
+In addition to the applications above **golflike** can be played in your terminal. The easiest way to set it up is through LuaRocks:
+```Shell
+  luarocks install --server=http://luarocks.org/dev golflike
+```
+**Note:** **golflike** uses the font and default 16-colour palette of your terminal. If your colourscheme is not a good match then the game might look very strange indeed!
+
 Setup from source
 -----------------
 
