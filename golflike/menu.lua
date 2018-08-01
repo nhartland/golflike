@@ -35,7 +35,10 @@ function menu:init(gstate)
     for _,v in ipairs(seeds) do
         random.add_generator(v.stype, v.seed)
         local rng = random.get_generator(v.stype)
-        local markov_name = markov.word(markov_chain, 12, rng)
+        local markov_name
+        repeat
+            markov_name = markov.word(markov_chain, rng)
+        until #markov_name > 4 and #markov_name < 15
         local uppercase = markov_name:sub(1,1):upper() .. markov_name:sub(2)
         local full_name = uppercase .. ' ' .. extensions[rng(#extensions)]
         table.insert(self.courses, {stype = v.stype, name = full_name})
