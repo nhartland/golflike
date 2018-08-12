@@ -148,7 +148,7 @@ local function compute_par(patterns, target_hole, target_tee)
     if opt_course == nil then
         return fail_gen("A*-traversable")
     end
-    if #opt_course < 5 then
+    if #opt_course < 4 then
         return fail_gen("Par too low")
     end
     if #opt_course > 8 then
@@ -191,7 +191,7 @@ function hole.process(patternSpec)
     end
 
     -- Fail if map is too small
-    if cell.euclidean(target_hole, target_tee) < 60 then
+    if cell.euclidean(target_hole, target_tee) < 40 then
         return fail_gen("Map too short")
     end
 

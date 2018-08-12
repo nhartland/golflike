@@ -16,7 +16,7 @@ local function compute_all_options(available, blocking)
             return not blocking:has_cell(x,y)
         end
         local opt = {}
-        local club = clubs[#clubs-1]
+        local club = clubs[#clubs]
         for icell in available:cells() do
             if cell.euclidean2(icell, origin) < club.range*club.range then
                 local pass = bresenham.line(origin, icell, passable)
