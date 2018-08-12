@@ -67,6 +67,7 @@ end
 
 function loading:control(gstate)
     if #gstate.course == gstate:total_holes() then
+        hole.stats_report() -- Report on generation stats
         return true, true, transition(gstate, true)
     else
         return true, false, nil
