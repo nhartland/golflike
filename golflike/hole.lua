@@ -135,7 +135,7 @@ local function compute_par(patterns, target_hole, target_tee)
     for k,p in pairs(patterns) do
         local map_index = map.dict[k]
         if map.tiles[map_index].block.air == true then
-            blocking = blocking + p:edge()
+            blocking = blocking + p:surface()
         end
     end
 
@@ -156,6 +156,33 @@ local function compute_par(patterns, target_hole, target_tee)
     end
     -- Return optimal course
     return opt_course
+end
+
+-- This trims all blocking tiles that border the optimium course
+-- ensuring that you don't have to make any 'trick shots' through
+-- 1-wide openings in blocking tiles.
+local function trim_blocking(patterns, opt_course)
+    local trajectory = pattern.new()
+    for i=1, #opt_course-1, 1 do
+        local tbegin = opt_course[i]
+        local tend   = opt_course[i+1]
+        trajectory = trajectory + primitives.line(tbegin, tend)
+    end
+
+    -- Compute edge of trajectory
+    trajectory = trajectory:edge()
+
+    local blocking = pattern.new()
+    for k,p in pairs(patterns) do
+        local map_index = map.dict[k]
+        if map.tiles[map_index].block.air == true then
+            blocking = blocking + p:surface()
+            patterns[k] = patterns[k] - trajectory
+        end
+    end
+
+    -- Add rough tiles to locations where blocked tiles have been removed
+    patterns["Rough"] = patterns["Rough"] + pattern.intersection(trajectory, blocking)
 end
 
 --- Compute locations for bonus items
@@ -214,6 +241,9 @@ function hole.process(patternSpec)
     local game = map.new(common.mapsize_x, common.mapsize_y)
     game.hole, game.tee = target_hole, target_tee
     game.opt_course = opt_course
+
+    -- Trim back blocking tiles
+    trim_blocking(patternSpec, game.opt_course)
 
     -- Add bonus items
     --add_items(patternSpec, opt_course)
