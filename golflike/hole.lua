@@ -20,6 +20,37 @@ local generators = {
     forest  = mapgen('Tree'),
 }
 
+
+-- Generation statistics and reporting ------------------------
+local generation_stats = {
+    ntries = 0, -- Attempts at generating holes
+    nfails = 0, -- Number of failed hole attempts
+    reasons = {}
+}
+
+local function fail_gen(reason)
+    generation_stats.nfails = generation_stats.nfails + 1
+    local reasons = generation_stats.reasons
+    if reasons[reason] == nil then
+        reasons[reason] = 1
+    else
+        reasons[reason] = reasons[reason] + 1
+    end
+end
+
+function hole.stats_report()
+    local gs = generation_stats
+    local report = log.debug
+    report()
+    report("Generation statistics")
+    report(gs.ntries .. " attempts at hole generation")
+    report(gs.nfails .. " failures at hole generation")
+    report("Failure breakdown:")
+    for k, v in pairs(gs.reasons) do
+        report(k ..': '.. v)
+    end
+end
+---------------------------------------------------------------
 -- Check pattern specification for irregularities.
 -- Checks a) That all specified patters correspond to map tiles
 --        b) That there are no overlapping patterns
@@ -104,7 +135,7 @@ local function compute_par(patterns, target_hole, target_tee)
     for k,p in pairs(patterns) do
         local map_index = map.dict[k]
         if map.tiles[map_index].block.air == true then
-            blocking = blocking + p:edge()
+            blocking = blocking + p:surface()
         end
     end
 
@@ -115,19 +146,43 @@ local function compute_par(patterns, target_hole, target_tee)
     -- If a hole cannot be found, or the par is > 8 then re-generate
     local opt_course = par.compute(available, blocking, target_tee, target_hole)
     if opt_course == nil then
-        log.warn("- FAIL: Map not A*-traversable")
-        return nil
+        return fail_gen("A*-traversable")
     end
-    if #opt_course < 5 then
-        log.warn("- FAIL: par too low")
-        return nil
+    if #opt_course < 4 then
+        return fail_gen("Par too low")
     end
     if #opt_course > 8 then
-        log.warn("- FAIL: par too high")
-        return nil
+        return fail_gen("Par too high")
     end
     -- Return optimal course
     return opt_course
+end
+
+-- This trims all blocking tiles that border the optimium course
+-- ensuring that you don't have to make any 'trick shots' through
+-- 1-wide openings in blocking tiles.
+local function trim_blocking(patterns, opt_course)
+    local trajectory = pattern.new()
+    for i=1, #opt_course-1, 1 do
+        local tbegin = opt_course[i]
+        local tend   = opt_course[i+1]
+        trajectory = trajectory + primitives.line(tbegin, tend)
+    end
+
+    -- Compute edge of trajectory
+    trajectory = trajectory:edge()
+
+    local blocking = pattern.new()
+    for k,p in pairs(patterns) do
+        local map_index = map.dict[k]
+        if map.tiles[map_index].block.air == true then
+            blocking = blocking + p:surface()
+            patterns[k] = patterns[k] - trajectory
+        end
+    end
+
+    -- Add rough tiles to locations where blocked tiles have been removed
+    patterns["Rough"] = patterns["Rough"] + pattern.intersection(trajectory, blocking)
 end
 
 --- Compute locations for bonus items
@@ -159,14 +214,12 @@ function hole.process(patternSpec)
     -- Place hole and tee
     local target_hole, target_tee = place_hole_tee(patternSpec["Fairway"])
     if target_hole == nil then
-        log.warn("- FAIL: Too few fairways")
-        return nil
+        return fail_gen("Too few fairways")
     end
 
     -- Fail if map is too small
-    if cell.euclidean(target_hole, target_tee) < 60 then
-        log.warn("- FAIL: Map too short")
-        return nil
+    if cell.euclidean(target_hole, target_tee) < 40 then
+        return fail_gen("Map too short")
     end
 
     -- Manage hole and tee patterns
@@ -189,6 +242,9 @@ function hole.process(patternSpec)
     game.hole, game.tee = target_hole, target_tee
     game.opt_course = opt_course
 
+    -- Trim back blocking tiles
+    trim_blocking(patternSpec, game.opt_course)
+
     -- Add bonus items
     --add_items(patternSpec, opt_course)
 
@@ -205,13 +261,10 @@ end
 -- otherwise returns `nil`.
 function hole.new(rng, mapname)
     local generator = generators[mapname]
-    log.debug("Generating new map: " .. mapname)
+    generation_stats.ntries = generation_stats.ntries + 1
     local domain = primitives.square(common.mapsize_x, common.mapsize_y)
     local newmap = generator(domain, rng)
     local processed = hole.process(newmap)
-    if processed ~= nil then
-        log.info("Map successfully generated")
-    end
     return processed
 end
 
