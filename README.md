@@ -11,7 +11,7 @@ themes. Games are very short, mostly taking less than ten minutes.
 <p align="center">
 <b>Download</b>
 <a href="https://github.com/nhartland/golflike/releases/download/v0.5b/golflike_0_5b_macos.zip">[macos]</a>
-<a href="https://github.com/nhartland/golflike/releases/download/v0.5b/golflike_0_5b_win.zip">[windows]</a>
+<a href="https://github.com/nhartland/golflike/releases/download/v0.5b/golflike_0_5b_win32.zip">[windows]</a>
 <a href="https://github.com/nhartland/golflike/releases/download/v0.5b/golflike_0_5b.love">[linux]</a>
 </p>
 
