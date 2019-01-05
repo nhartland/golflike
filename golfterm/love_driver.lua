@@ -123,7 +123,11 @@ end
 
 function l2d.close()                                end -- Close the display
 function l2d.size()   return l2d.size_y, l2d.size_x end -- Return the (y, x) size of the display
-function l2d.sleep(s) love.timer.sleep( s )         end -- Sleep for `s` seconds
+
+-- Return elapsed time in milliseconds
+function l2d.getTime()
+    return love.timer.getTime()*1000
+end
 
 -- Print a character `ch` at line `l` column `c`
 function l2d.mvaddch(l, c, ch)

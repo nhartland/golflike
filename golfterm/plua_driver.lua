@@ -117,6 +117,7 @@ function plt.mvaddch(l,c,ch)
     plt.out(ch)
 end
 
+
 --- Set colour attributes
 -- Requires a 256 colour capable terminal
 -- @param f foreground colour
@@ -166,18 +167,17 @@ function plt.getInput()
         end
     end
 end
-
--- No obvious way to do this yet
-function plt.flushInput() end
-
---- Sleep for `s` seconds
-function plt.sleep(s)
-    os.execute("sleep " .. tostring(s))
-end
-
--- Flush results to terminal
+-- Draw results to terminal
 function plt.draw()
     plt.flush()
+end
+
+-- ----------------------------------------------
+-- NYI: No obvious way to do this yet
+function plt.flushInput() end
+-- NYI: Return the elapsed time in milliseconds
+function plt.getTime()
+    return 0
 end
 
 return plt
