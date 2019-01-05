@@ -19,6 +19,7 @@ dependencies = {
    "30log >= 1.3.0",
    "forma >= 0.2",
    "lcurses >= 9.0.0"
+   "luaposix >= 34.0.4"
 }
 build = {
    type = "builtin",
