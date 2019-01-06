@@ -26,7 +26,7 @@ function message:init(_, nextstate, text, colours_table, killtable)
         self.colours   = {}
         -- Parse message into a table, split by newlines
         for line in text:gmatch("([^\n]*)\n?") do
-            table.insert(self.colours, colour.white)
+            table.insert(self.colours, colour.b_white)
             table.insert(self.text, line)
         end
         self.colours[1] = colour.b_red
