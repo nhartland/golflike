@@ -1,5 +1,6 @@
 -- main.lua
 -- Game loop
+local map         = require('golflike.map')
 local log         = require('golflike.lib.log')
 local common      = require('golflike.common')
 local competition = require('golflike.competition')
@@ -55,13 +56,13 @@ function game.update()
     end
     -- Reset rendering
     game.render = false
-    -- First perform walltime tick
+    -- First perform effects tick
     local currentTime = termio.getTime()
     local deltaTime = currentTime - game.lastClock
-    if deltaTime > 150 then
+    if game.state:current_hole() ~= nil and deltaTime > 150 then
         game.render = true
         game.lastClock = currentTime
-        -- Perform animation tick
+        map.effects_tick(game.state:current_hole())
     end
     -- Secondly perform gameplay tick
     if game.tick == true then

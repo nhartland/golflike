@@ -3,11 +3,13 @@
 -- Increments the hole number, and moves the player to the new tee.
 local class    = require('30log')
 local message  = require('golflike.message')
-local effects  = require('golflike.effects')
 local transition  = class("TransitionScreen")
 
 -- Perform transition to next hole
 function transition:init(gstate)
+    -- Set stroke count to zero
+    gstate.stroke_count = 0
+    -- Move to next hole
     -- Don't increment on first initialisation
     -- This is measured by checking the scorecard
     if #gstate.scorecard > 0 then
@@ -15,10 +17,6 @@ function transition:init(gstate)
     else
         gstate.initialised = true
     end
-    -- Set stroke count to zero
-    gstate.stroke_count = 0
-    -- Re-initialise effects layer
-    gstate.effects = effects(gstate:current_hole())
 end
 
 function transition:tick(_) end
