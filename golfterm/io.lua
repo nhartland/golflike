@@ -14,8 +14,7 @@ driver = require(path.."lcurses_driver") end
 local termio = {
     centre   = true,             -- Centre window in current terminal
     worig    = {x=0, y=0},       -- Origin of window in terminal
-    wsize    = {x=0, y=0},       -- Requested window size
-    drawTime = math.huge         -- Time at last render
+    wsize    = {x=0, y=0}       -- Requested window size
 }
 
 -- Drawing buffers: stores character and foreground/background
@@ -90,9 +89,8 @@ function termio.draw()
             end
         end
     end
-    -- Draw and update timer
+    -- Draw
     driver.draw()
-    termio.drawTime = driver.getTime()
 end
 
 -- Clears the rendering buffer
@@ -142,6 +140,7 @@ function termio.putstr(x, y, str, fg, bg)
 end
 
 -- Functions that pass straight through to the underlying driver
+function termio.getTime()          return driver.getTime()          end -- Current elapsed time (ms)
 function termio.getInput(blocking) return driver.getInput(blocking) end -- Get input from terminal
 function termio.flushInput()       return driver.flushInput()       end -- Flush input in terminal
 
@@ -152,12 +151,6 @@ function termio.sleep(s)
         local elapsedTime = driver.getTime() - startTime
     until elapsedTime > s*1000
     termio.flushInput()
-end
-
--- Return the elapsed time (in milliseconds) since last call to termio.draw
-function termio.getDeltaT()
-    local currentTime = driver.getTime()
-    return currentTime - termio.drawTime
 end
 
 -- Check terminal dimensions ----------------------------------------------
