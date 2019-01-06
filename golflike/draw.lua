@@ -72,19 +72,6 @@ function draw.to_map(x, y, char, fg, bg)
     termio.putchar(x, y+1, char, fg, bg)
 end
 
--- Draw the map
-function draw.map(hole)
-    for ix = 0, common.mapsize_x-1, 1 do
-        for iy = 0, common.mapsize_y - 1, 1 do
-            local tile = map.get(hole, ix, iy)
-            if tile ~= map.tiles[0] then
-                local fg, bg = tile.fg, tile.bg
-                draw.to_map(ix, iy, tile.char, fg, bg)
-            end
-        end
-    end
-end
-
 -- Draw the red target area for aiming
 function draw.target(hole, target)
     for itrg = 1, #target, 1 do
