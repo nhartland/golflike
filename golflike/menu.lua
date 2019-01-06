@@ -64,7 +64,7 @@ function menu:render(gstate)
     -- Print course options
     for k,v in ipairs(self.courses) do
         termio.putstr(xo, ic, self.control_chars[k]..") "..v.stype.. " course:", colour.yellow, colour.black)
-        termio.putstr(xo, ic+1, '    '..v.name, colour.white, colour.black)
+        termio.putstr(xo, ic+1, '    '..v.name, colour.b_white, colour.black)
         ic = ic + 3
     end
     -- Exit key

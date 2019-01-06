@@ -157,7 +157,7 @@ function competition.get_standings_message(player_scorecard, rival_list, nholes)
         if player.name == "PLAYER" then
             table.insert(colours, colour.green)
         else
-            table.insert(colours, colour.white)
+            table.insert(colours, colour.b_white)
         end
     end
     table.insert(text, "") table.insert(colours, colour.green)
