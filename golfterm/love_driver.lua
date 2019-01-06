@@ -57,7 +57,7 @@ colourmap[colour.yellow]    = {255,180,84}
 colourmap[colour.blue]      = {38,107,133}
 colourmap[colour.magenta]   = {203,37,61}
 colourmap[colour.cyan]      = {137,150,168}
-colourmap[colour.white]     = {254,254,254}
+colourmap[colour.white]     = {110,220,255}
 -- Bright colours
 colourmap[colour.b_black]   = {35,50,63}
 colourmap[colour.b_red]     = {240,94,51}

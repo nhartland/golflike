@@ -64,6 +64,7 @@ function lc_driver.init(_)
     lc_driver.display = curses.initscr() -- Initialise screen
     curses.echo 	(false)		   -- Disable echoing of each print
     curses.nl 		(false)		   -- Disable return being interpreted as newline
+    curses.halfdelay(2)            -- 1/10th of a second halfdelay
     curses.curs_set	(0)		       -- Disable cursor
     curses.start_color()           -- Setup colours
     curses.use_default_colors()

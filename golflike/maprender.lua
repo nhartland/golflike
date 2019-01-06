@@ -12,7 +12,7 @@ function maprender:init() end
 function maprender:tick(_) end
 
 function maprender:render(gstate)
-    local hole = gstate:current_hole()
+    local hole    = gstate:current_hole()
     if hole == nil then return end -- Game finished
     if gstate.initialised == false then return end -- Game not loaded yet
     -- Draw the map
@@ -24,6 +24,10 @@ function maprender:render(gstate)
                 draw.to_map(ix, iy, tile.char, fg, bg)
             end
         end
+    end
+    -- Draw map effects
+    for _, effect in ipairs(hole.active_effects) do
+        effect:draw()
     end
     -- Draw status and infolines
     local scorecard = gstate:get_scorecard()

@@ -17,6 +17,7 @@ function state:init(name)
     self.scorecard = {}      -- Player scorecard
     self.course = {}         -- List of holes in course
     self.location = nil      -- Current ball location
+    self.effects = nil       -- Map effects layer
     -- List of rivals in the game
     self.rival_list = competition.get_rivals(8, math)
 end
