@@ -11,10 +11,11 @@ local flight     = class("flight")
 function flight:init(startpos, trajectory, club)
     self.club         = club       -- Club used to initiate flight
     self.trajectory   = trajectory -- Flight trajectory
-    self.path_history = {startpos} -- Elapsed trajectory
-    self.hole_scored  = false      -- Flag for scoring a hole
-    self.hazard       = false      -- Flag for a encountering a hazard
-    self.hazard_tile  = nil        -- Name of the tile of encountered hazard
+    self.trj_position = 1          -- Current point along the trajectory
+    self.flight_end   = false      -- Flag to indicate when flight has finished
+    self.hole_scored  = false      -- Flag to indicate a hole has been scored
+    self.hazard       = false      -- Flag to indicate a hazard was encountered
+    self.hazard_tile  = nil        -- Name of the tile of the encountered hazard
 end
 
 --- Next step in 'simulation'.
@@ -22,31 +23,30 @@ function flight:tick(gstate)
     -- Sleep for a bit to limit framerate
     termio.sleep(0.15)
     -- Move along trajectory
-    if #self.trajectory > 0 then
-        gstate:move(self.trajectory[1])
-        table.remove(self.trajectory, 1)
+    if self.trj_position < #self.trajectory then
+        self.trj_position = self.trj_position + 1
     end
-    -- Push onto path history
-    table.insert(self.path_history, gstate:ball_position())
     -- Check for hole or hazards
-    if (#self.trajectory == 0 or self.club.kind == "ground") then
-    -- Check for hazard
-        self:handle_hazard(gstate)
-        self:handle_hole(gstate)
+    if (self.trj_position == #self.trajectory or self.club.kind == "ground") then
+        self.hazard      = self:handle_hazard(gstate)
+        self.hole_scored = self:handle_hole(gstate)
+        self.flight_end = true
     end
+    -- Update the location of the ball
+    gstate:move(self.trajectory[self.trj_position])
 end
 
 function flight:render(gstate)
     local hole = gstate:current_hole()
     assert(hole ~= nil, "flight:render encountered a nil map")
-    draw.trajectory (hole, self.path_history, self.club.trchar)
+    draw.trajectory (hole, self.trajectory, self.trj_position,  self.club.trchar)
     draw.ball(hole, gstate:ball_position())
     draw.rightstatus("Ball in flight")
 end
 
 function flight:control(gstate)
     -- Flight not yet finished
-    if #self.trajectory  ~= 0 then
+    if self.flight_end  == false then
         return true, false, nil
     end
     -- Flight finished with hole scored
@@ -80,22 +80,24 @@ end
 -- Maybe you shouldn't be able to putt into trees?
 function flight:handle_hazard(gstate)
     local hole = gstate:current_hole()
-    local trj, itrj = self.path_history, #self.path_history
+    local trj, itrj = self.trajectory, self.trj_position
     -- Fetch current position and test for hazard
     local tile = map.get(hole, trj[itrj].x, trj[itrj].y)
     if tile.hazard == true then
         self.hazard_name = tile.name
-        self.hazard = true
         -- Rewind flight until no longer on a (ground) hazard
         while tile.hazard == true do
             itrj = itrj - 1
             tile = map.get(hole, trj[itrj].x, trj[itrj].y)
         end
-        -- Move to previous safe location
-        self.trajectory = {}
-        gstate:move(trj[itrj])
+        -- Reset trajectory position to the last safe location
+        self.trj_position = itrj
+        -- Penalize score by hazard
         gstate:increment_stroke_count()
+        -- Return the hazard and it's name
+        return true
     end
+    return false
 end
 
 -- Handle scoring a hole!
@@ -104,8 +106,6 @@ function flight:handle_hole(gstate)
     local loc = gstate:ball_position()
     local tile = map.get(hole, loc.x, loc.y)
     if tile.name == "Hole" then
-        self.trajectory = {}
-        self.hole_scored = true
         return true
     end
     return false

@@ -132,7 +132,6 @@ function help:render_uitips()
     termio.putstr(44, 1,"Game over at zero balls remaining ^^", colour.yellow, colour.black)
     termio.putstr(0,  termio.wsize.y-2, background, colour.b_white, colour.black)
     termio.putstr(2,  termio.wsize.y-2,"vv  Hole Stats  vv", colour.yellow, colour.black)
-    termio.putstr(35, termio.wsize.y-2,"vv Chance of losing ball to a hazard", colour.yellow, colour.black)
 end
 
 function help:control(_)

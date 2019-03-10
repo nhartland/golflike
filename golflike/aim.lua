@@ -15,9 +15,6 @@ function aim:init(gstate)
     self.trj = nil           -- The bresenham trajectory from the ball to the target arc point
     self.arc_target = nil    -- The index of `arc` which the player is currently targetting
     self.trj_target = nil    -- The point on the trajectory `trj` that the player is aiming at
-    self.targets = nil       -- The possible final locations for the ball to land
-    self.path_targets = nil  -- The list of `targets` where there is a line of sight
-    self.hazardfraction = 0  -- The fraction of targets that are hazardous
     self.selected_club = 1   -- Currently selected club
     self.display_par = false -- DEBUG toggles the display of the optimal route
 
@@ -28,19 +25,6 @@ function aim:init(gstate)
     while true do if self:next_club() == false then break end end
     repeat if self:current_club().range < tdistance then break end
     until self:prev_club() == false
-end
-
---- Compute the fraction of a list of targets that are hazardous
-local function compute_hazard_fraction(targets, hole)
-    local count = 0
-    for i=1,#targets,1 do
-        local tpt = targets[i]
-        local tile = map.get(hole, tpt.x, tpt.y)
-        if tile.hazard == true then
-            count = count + 1
-        end
-    end
-    return count / #targets
 end
 
 -- Recompute (if necessary) aim arc, targets etc
@@ -58,12 +42,6 @@ function aim:tick(gstate)
     if self.trj == nil then
         self.trj = geometry.compute_trajectory(hole, club, plpos, self.arc[self.arc_target])
         self.trj_target = #self.trj
-        self.targets = nil -- Recompute targets
-    end
-    if self.targets == nil then
-        self.targets = geometry.compute_targets(self.trj[self.trj_target], club.accuracy)
-        self.path_targets = geometry.compute_pathable_targets(hole, club, plpos, self.targets)
-        self.hazardfraction = compute_hazard_fraction(self.path_targets, hole)
     end
 end
 
@@ -74,13 +52,11 @@ function aim:render(gstate)
 
     -- Draw aiming UI elements
     --draw.target      (hole, self.path_targets)
-    draw.trajectory  (hole, self.trj, club.trchar)
-    draw.target      (hole, self.targets)
+    draw.trajectory  (hole, self.trj, self.trj_target, club.trchar)
     draw.ball        (hole, gstate:ball_position())
 
     -- UI
     draw.rightstatus("Press [?] for help")
-    draw.hazardstatus(club, self.hazardfraction)
 
     -- DEBUG
     -- If the flag is set, draw the 'optimal' trajectory points
@@ -89,7 +65,7 @@ function aim:render(gstate)
             local st  = hole.opt_course[i]
             local fn  = hole.opt_course[i+1]
             local trj = geometry.compute_trajectory(hole, club, fn, st)
-            draw.trajectory(hole, trj, '%')
+            draw.trajectory(hole, trj, #trj, '%')
         end
     end
 end
@@ -131,7 +107,7 @@ function aim:control(gstate)
         return true
     elseif input == keymap.strike then
         -- Pick a random target from the list of options and route to it
-        local target     = self.path_targets[math.random(#self.targets)]
+        local target     = self.trj[self.trj_target]
         local trajectory = geometry.compute_trajectory(hole, club, gstate:ball_position(), target)
         gstate:increment_stroke_count()
         local flight = require('golflike.flight')
@@ -180,7 +156,6 @@ function aim:handle_precise_aim(aimvec)
     self.trj_target = self.trj_target + aimvec
     self.trj_target = math.min(#self.trj, self.trj_target)
     self.trj_target = math.max(1, self.trj_target)
-    self.targets = nil -- Reset targets
 end
 
 -- Club handling ---------------------------------------------------------------

@@ -49,21 +49,6 @@ function draw.rightstatus(str, fg)
     termio.right_justify(statusline_y, str, fg, colour.black)
 end
 
--- Draw hazard indicator (right part) of statusline
-function draw.hazardstatus(club, hazardfraction)
-    local display_hzd = 10*math.floor(hazardfraction*10.0 + 0.5)
-    if hazardfraction == 0 then
-        draw.centrestatus(club.name .. ": No Hazard ", colour.b_white)
-    elseif display_hzd == 0 then
-        draw.centrestatus(club.name .. ": Hazard risk < 10%", colour.b_white)
-    elseif display_hzd < 60 then
-        draw.centrestatus(club.name .. ": Hazard risk "..display_hzd.."%", colour.b_yellow)
-    else
-        draw.centrestatus(club.name .. ": Hazard risk "..display_hzd.."%", colour.b_red)
-    end
-end
-
-
 -- Game rendering -------------------------------------------------------------------------------------
 
 -- Draw a map character to terminal
@@ -72,24 +57,9 @@ function draw.to_map(x, y, char, fg, bg)
     termio.putchar(x, y+1, char, fg, bg)
 end
 
--- Draw the red target area for aiming
-function draw.target(hole, target)
-    for itrg = 1, #target, 1 do
-        local vtarget = target[itrg]
-        if in_game_bounds(vtarget) then
-            local tile = map.get(hole, vtarget.x, vtarget.y)
-            if tile.block.air == false then
-                draw.to_map(vtarget.x, vtarget.y, '=', colour.red, tile.bg)
-            else
-                draw.to_map(vtarget.x, vtarget.y, tile.char, colour.magenta, tile.bg)
-            end
-        end
-    end
-end
-
 -- Draw the planned trajectory for aiming
-function draw.trajectory(hole, trajectory, char)
-    for itrj = 1, #trajectory, 1 do
+function draw.trajectory(hole, trajectory, max_trajectory, char)
+    for itrj = 1, max_trajectory, 1 do
         local vtrj = trajectory[itrj]
         if in_game_bounds(vtrj) then
             local tile = map.get(hole, vtrj.x, vtrj.y)
