@@ -9,6 +9,7 @@ local transition  = class("TransitionScreen")
 function transition:init(gstate)
     -- Set stroke count to zero
     gstate.stroke_count = 0
+    -- Move to next hole
     -- Don't increment on first initialisation
     -- This is measured by checking the scorecard
     if #gstate.scorecard > 0 then
@@ -23,18 +24,18 @@ function transition:render(_) end
 
 function transition:control(gstate)
     local hole = gstate:current_hole()
-    if hole == nil then -- Game over
+    -- If there is no current hole, the game is over
+    if hole == nil then
         gstate.terminate = true
         return true, true, nil
-    else
-        -- Move player to new starting point
-        gstate:move(hole.tee)
-        -- Print new hole message
-        local msg = gstate:name() .. '\n'
-        msg = msg .. "Hole ".. #gstate:get_scorecard() + 1 .. ", Par " .. #hole.opt_course
-        local aim = require('golflike.aim')
-        return true, true, message(gstate, aim, msg)
     end
+    -- If there is an active current hole, move player to new starting point
+    gstate:move(hole.tee)
+    -- Print new hole message
+    local msg = gstate:name() .. '\n'
+    msg = msg .. "Hole ".. #gstate:get_scorecard() + 1 .. ", Par " .. #hole.opt_course
+    local aim = require('golflike.aim')
+    return true, true, message(gstate, aim, msg)
 end
 
 return transition

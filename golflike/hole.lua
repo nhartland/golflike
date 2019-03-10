@@ -263,9 +263,13 @@ function hole.new(rng, mapname)
     local generator = generators[mapname]
     generation_stats.ntries = generation_stats.ntries + 1
     local domain = primitives.square(common.mapsize_x, common.mapsize_y)
-    local newmap = generator(domain, rng)
-    local processed = hole.process(newmap)
-    return processed
+    local mapspec = generator(domain, rng)
+    local new_map   = hole.process(mapspec)
+    if new_map ~= nil then
+        return map.finalise(new_map)
+    else -- Mapgen failed
+        return nil
+    end
 end
 
 return hole
