@@ -25,19 +25,22 @@ function geometry.compute_arc(hole, origin, club)
 
     -- Loop through disc and find bresenham end-points of each shot
     local arc = {}
+    local arc_angles = {}
     for np in disc:cells() do
         local trj = geometry.compute_trajectory(hole, club, origin, np)
         local angle = geometry.compute_angle(trj[#trj], origin)
         -- Check that the new element does not match in angle any existing elements
         local permissable = true
-        for i=1,#arc,1 do
-            if geometry.compute_angle(arc[i], origin) == angle then
+        for i=1,#arc_angles,1 do
+            -- This might have to be made up to a certain precision, rather than a straight ==
+            if arc_angles[i] == angle then
                 permissable = false
                 break
             end
         end
         if permissable == true then
             table.insert(arc, trj[#trj])
+            table.insert(arc_angles, angle)
         end
     end
     -- Sort possible targets by angle to target
