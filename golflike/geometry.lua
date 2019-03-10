@@ -74,29 +74,4 @@ function geometry.compute_trajectory(hole, club, origin, target)
     return trj, check
 end
 
--- Compute the target points for a shot (doesnt check for LOS)
-function geometry.compute_targets(target, r)
-    local target_points = {}
-    for x=-r,r,1 do
-        local yrange = math.floor(math.sqrt(r*r - x*x))
-        for y = -yrange, yrange,1 do
-            table.insert(target_points, cell.new(x,y) + target)
-        end
-    end
-    return target_points
-end
-
--- Computes the visible (by bresenham) target area
--- takes the above function as an argument
--- Could be sped up by checking paths
-function geometry.compute_pathable_targets(hole, club, origin, targets)
-    local pathable_targets = {}
-    for ipt = 1, #targets, 1 do
-        local tp  = targets[ipt]
-        local loc = geometry.compute_trajectory(hole, club, origin, tp)
-        table.insert(pathable_targets, loc[#loc])
-    end
-    return pathable_targets
-end
-
 return geometry
