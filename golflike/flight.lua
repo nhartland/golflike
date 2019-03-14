@@ -26,14 +26,17 @@ function flight:tick(gstate)
     if self.trj_position < #self.trajectory then
         self.trj_position = self.trj_position + 1
     end
-    -- Check for hole or hazards
-    if (self.trj_position == #self.trajectory or self.club.kind == "ground") then
-        self.hazard      = self:handle_hazard(gstate)
-        self.hole_scored = self:handle_hole(gstate)
-        self.flight_end = true
-    end
     -- Update the location of the ball
     gstate:move(self.trajectory[self.trj_position])
+    -- Check for hole or hazards
+    local finished_flight = self.trj_position == #self.trajectory
+    if (finished_flight or self.club.kind == "ground") then
+        self.hazard      = self:handle_hazard(gstate)
+        self.hole_scored = self:handle_hole(gstate)
+        if finished_flight or self.hazard or self.hole_scored then
+            self.flight_end = true
+        end
+    end
 end
 
 function flight:render(gstate)
@@ -92,6 +95,8 @@ function flight:handle_hazard(gstate)
         end
         -- Reset trajectory position to the last safe location
         self.trj_position = itrj
+        -- Update the location of the ball
+        gstate:move(self.trajectory[self.trj_position])
         -- Penalize score by hazard
         gstate:increment_stroke_count()
         -- Return the hazard and it's name

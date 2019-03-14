@@ -115,6 +115,14 @@ function aim:get_trajectory(gstate)
     -- Route to the target, taking into account the wind
     local plpos    = gstate:ball_position()        -- Current player position
     local target   = self.trj[self.trj_target]     -- Target position
+    -- No sensitivity to wind if we're on the ground
+    if club.kind == "ground" then
+        local trajectory = {}
+        for i=1, self.trj_target, 1 do
+            table.insert(trajectory, self.trj[i])
+        end
+        return trajectory
+    end
     local distance = cell.euclidean(plpos, target) -- Range to target
     -- Computation of wind effect
     local wind_radius = math.floor(math.log10(10.0*self.wind_speed)*(distance / 7))
