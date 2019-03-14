@@ -49,6 +49,11 @@ function draw.rightstatus(str, fg)
     termio.right_justify(statusline_y, str, fg, colour.black)
 end
 
+--- Draw windspeed indicator
+function draw.windstatus(club, wind_direction, wind_strength)
+    draw.centrestatus(club.name .. ": " .. wind_strength .. " " .. wind_direction .. " wind", colour.b_white)
+end
+
 -- Game rendering -------------------------------------------------------------------------------------
 
 -- Draw a map character to terminal

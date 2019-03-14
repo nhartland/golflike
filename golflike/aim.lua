@@ -10,12 +10,46 @@ local keymap     = require('golflike.keymap')
 local termio     = require('golfterm.io')
 local aim = class("Aim")
 
+-- Fairly obvious
+local wind_descriptions = {
+    {name = "N",   angle = 0},
+    {name = "NE",  angle = 1.0*math.pi/8.0},
+    {name = "NNE", angle = 2.0*math.pi/8.0},
+    {name = "ENE", angle = 3.0*math.pi/8.0},
+    {name = "E",   angle = 4.0*math.pi/8.0},
+    {name = "ESE", angle = 5.0*math.pi/8.0},
+    {name = "SE",  angle = 6.0*math.pi/8.0},
+    {name = "SSE", angle = 7.0*math.pi/8.0},
+    {name = "S",   angle = 8.0*math.pi/8.0},
+    {name = "SSW", angle = 9.0*math.pi/8.0},
+    {name = "SW",  angle = 10.0*math.pi/8.0},
+    {name = "WSW", angle = 11.0*math.pi/8.0},
+    {name = "W",   angle = 12.0*math.pi/8.0},
+    {name = "WNW", angle = 13.0*math.pi/8.0},
+    {name = "NW",  angle = 14.0*math.pi/8.0},
+    {name = "NNW", angle = 15.0*math.pi/8.0}
+}
+
+local wind_speeds = {
+    {name = "Light",    strength = 1},
+    {name = "Moderate", strength = 2},
+    {name = "Strong",   strength = 3}
+}
+
+-- Get the range for using a club at one point
+local function get_club_range(hole, origin, club)
+    local tile_name = map.get(hole, origin.x, origin.y).name
+    return clubs.get_range(tile_name, club)
+end
+
 function aim:init(gstate)
     self.arc = nil           -- The arc of different target positions possible with a club
     self.trj = nil           -- The bresenham trajectory from the ball to the target arc point
     self.arc_target = nil    -- The index of `arc` which the player is currently targetting
     self.trj_target = nil    -- The point on the trajectory `trj` that the player is aiming at
     self.selected_club = 1   -- Currently selected club
+    self.wind_speed  = math.random(#wind_speeds)       -- Current wind speed [1,3]
+    self.wind_angle  = math.random(#wind_descriptions) -- Current wind direction (1, 16)
     self.display_par = false -- DEBUG toggles the display of the optimal route
 
     -- Select optimum target angle
@@ -34,13 +68,14 @@ function aim:tick(gstate)
     local hole  = gstate:current_hole()
     local plpos = gstate:ball_position()
     local club  = self:current_club()
+    local range = get_club_range(hole, plpos, club)
     if self.arc == nil then
-        self.arc = geometry.compute_arc(hole, plpos, club)
+        self.arc = geometry.compute_arc(plpos, range)
         self.arc_target = geometry.get_arc_target(self.arc, plpos, self.target_angle)
         self.trj = nil     -- Recompute trajectory
     end
     if self.trj == nil then
-        self.trj = geometry.compute_trajectory(hole, club, plpos, self.arc[self.arc_target])
+        self.trj = geometry.bresenham_trajectory(hole, club, plpos, self.arc[self.arc_target])
         self.trj_target = #self.trj
     end
 end
@@ -51,12 +86,14 @@ function aim:render(gstate)
     local club = self:current_club()
 
     -- Draw aiming UI elements
-    --draw.target      (hole, self.path_targets)
     draw.trajectory  (hole, self.trj, self.trj_target, club.trchar)
     draw.ball        (hole, gstate:ball_position())
 
     -- UI
     draw.rightstatus("Press [?] for help")
+    local wind_desc = wind_descriptions[self.wind_angle].name
+    local wind_spd  = wind_speeds[self.wind_speed].name
+    draw.windstatus(club, wind_desc, wind_spd)
 
     -- DEBUG
     -- If the flag is set, draw the 'optimal' trajectory points
@@ -64,11 +101,33 @@ function aim:render(gstate)
         for i=1,#hole.opt_course - 1, 1 do
             local st  = hole.opt_course[i]
             local fn  = hole.opt_course[i+1]
-            local trj = geometry.compute_trajectory(hole, club, fn, st)
+            local trj = geometry.bresenham_trajectory(hole, club, self.wind_vector, fn, st)
             draw.trajectory(hole, trj, #trj, '%')
         end
     end
 end
+
+-- Compute the final (wind-adjusted) trajectory for a shot
+function aim:get_trajectory(gstate)
+    -- Overall setup
+    local hole  = gstate:current_hole()
+    local club = self:current_club()
+    -- Route to the target, taking into account the wind
+    local plpos    = gstate:ball_position()        -- Current player position
+    local target   = self.trj[self.trj_target]     -- Target position
+    local distance = cell.euclidean(plpos, target) -- Range to target
+    -- Computation of wind effect
+    local wind_radius = math.floor(math.log10(10.0*self.wind_speed)*(distance / 7))
+    if wind_radius > 0 then
+        local wind_arc    = geometry.compute_arc(cell.new(0,0), wind_radius)
+        local wind_angle  = wind_descriptions[self.wind_angle].angle - math.pi / 2.0 -- Need to sort out this -pi/2
+        local wind_vector = wind_arc[geometry.get_arc_target(wind_arc, cell.new(0,0), wind_angle)]
+        return geometry.bezier_trajectory(hole, club, wind_vector, plpos, target)
+    else
+        return geometry.bezier_trajectory(hole, club, cell.new(0,0), plpos, target)
+    end
+end
+
 
 -- Control aim state, given a game state this polls for input and changes aim
 -- state accordingly
@@ -106,12 +165,10 @@ function aim:control(gstate)
         self:handle_precise_aim(-1)
         return true
     elseif input == keymap.strike then
-        -- Pick a random target from the list of options and route to it
-        local target     = self.trj[self.trj_target]
-        local trajectory = geometry.compute_trajectory(hole, club, gstate:ball_position(), target)
         gstate:increment_stroke_count()
+        local trajectory = self:get_trajectory(gstate)
         local flight = require('golflike.flight')
-        return true, true, flight(gstate:ball_position(), trajectory, club)
+        return true, true, flight(plpos, trajectory, club)
     elseif input == keymap.help then
         local help = require('golflike.help')
         return true, false, help(self:current_club())

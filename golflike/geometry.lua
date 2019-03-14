@@ -7,42 +7,18 @@ local clubs      = require('golflike.clubs')
 local map        = require("golflike.map")
 local geometry = {}
 
--- Get the range for using a club at one point
-local function get_club_range(hole, origin, club)
-    local tile_name = map.get(hole, origin.x, origin.y).name
-    return clubs.get_range(tile_name, club)
-end
-
 function geometry.compute_angle(vec, origin)
     return math.atan2(vec.y-origin.y, vec.x-origin.x)
 end
 
 -- Compute the arc of travel for a player, with a start position close to tvec
-function geometry.compute_arc(hole, origin, club)
+-- Compute an arc of points
+function geometry.compute_arc(origin, range)
     -- Compute disc of cells in range of club
-    local range = get_club_range(hole, origin, club)
     local disc = primitives.circle(range):shift(origin.x, origin.y)
-
-    -- Loop through disc and find bresenham end-points of each shot
-    local arc = {}
-    local arc_termini = {}
-    for np in disc:cells() do
-        local trj = geometry.compute_trajectory(hole, club, origin, np)
-        local terminus = trj[#trj]
-        -- Check that the new element does not match in angle any existing elements
-        local permissable = true
-        for i=1, #arc_termini, 1 do
-            if arc_termini[i] == terminus then
-                permissable = false
-                break
-            end
-        end
-        if permissable == true then
-            table.insert(arc, trj[#trj])
-            table.insert(arc_termini, terminus)
-        end
-    end
-    -- Sort possible targets by angle to target
+    -- Form a list of cells from the disc
+    local arc = disc:cell_list()
+    -- Sort possible targets by angle
     table.sort(arc, function(a,b)
         return geometry.compute_angle(a,origin) < geometry.compute_angle(b,origin)
     end)
@@ -64,16 +40,41 @@ end
 
 -- Computes a bresenham trajectory between the origin and target,
 -- stopping on hitting a block or water (if using the putter)
-function geometry.compute_trajectory(hole, club, origin, target)
+function geometry.bresenham_trajectory(hole, club, origin, target)
     local trj = {}
+    local block_point = math.huge
     local function push_point(x,y)
         trj[#trj+1] = cell.new(x,y)
         local tile = map.get(hole, x, y)
-        local blocking = tile.block[club.kind]
-        return blocking == false
+        -- Set the flag to identify where the trajectory is blocked
+        if tile.block[club.kind] == true then
+            block_point = math.min(block_point, #trj)
+        end
     end
     local check = bresenham.line(origin, target, push_point)
-    return trj, check
+    return trj, block_point
+end
+
+-- Computes the bezier trajectory between the origin and target, stopping on
+-- hitting a blocking tile
+function geometry.bezier_trajectory(hole, club, wind, origin, target)
+    -- Find a control point half way between the target and the origin
+    local vector = (target - origin)
+    local nx = math.floor(vector.x / 3) -- 3 seems like a good number
+    local ny = math.floor(vector.y / 3)
+    local half_vector = cell.new(nx, ny)
+    local control = origin + half_vector
+    bezier = primitives.quad_bezier(origin, control, target+wind, 5)
+    local trj = {}
+    for np in bezier:cells() do
+        trj[#trj+1] = np
+        local tile = map.get(hole, np.x, np.y)
+        local blocking = tile.block[club.kind]
+        if blocking == true then
+            return trj
+        end
+    end
+    return trj
 end
 
 return geometry
