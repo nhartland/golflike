@@ -63,12 +63,26 @@ function draw.to_map(x, y, char, fg, bg)
 end
 
 -- Draw the planned trajectory for aiming
-function draw.trajectory(hole, trajectory, max_trajectory, char)
+function draw.trajectory(hole, trajectory, block_point, max_trajectory, char)
     for itrj = 1, max_trajectory, 1 do
         local vtrj = trajectory[itrj]
         if in_game_bounds(vtrj) then
             local tile = map.get(hole, vtrj.x, vtrj.y)
-            draw.to_map(vtrj.x, vtrj.y, char, colour.red, tile.bg)
+            -- By default use the trajectory character
+            local s_char = char
+            if tile.block.air == true then
+                -- If it's an air blocking tile, use the tile character
+                s_char = tile.char
+            elseif itrj == max_trajectory then
+                -- If it's the final tile, use the X  character
+                s_char = 'X'
+            end
+            -- Draw in red until blocking point, white thereafter
+            if itrj < block_point then
+                draw.to_map(vtrj.x, vtrj.y, s_char, colour.red, tile.bg)
+            else
+                draw.to_map(vtrj.x, vtrj.y, s_char, colour.b_white, tile.bg)
+            end
         end
     end
 end

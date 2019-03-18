@@ -45,6 +45,7 @@ end
 function aim:init(gstate)
     self.arc = nil           -- The arc of different target positions possible with a club
     self.trj = nil           -- The bresenham trajectory from the ball to the target arc point
+    self.trj_block = nil     -- The point along the trajectory intersecting a blocking object
     self.arc_target = nil    -- The index of `arc` which the player is currently targetting
     self.trj_target = nil    -- The point on the trajectory `trj` that the player is aiming at
     self.selected_club = 1   -- Currently selected club
@@ -75,7 +76,7 @@ function aim:tick(gstate)
         self.trj = nil     -- Recompute trajectory
     end
     if self.trj == nil then
-        self.trj = geometry.bresenham_trajectory(hole, club, plpos, self.arc[self.arc_target])
+        self.trj, self.trj_block = geometry.bresenham_trajectory(hole, club, plpos, self.arc[self.arc_target])
         self.trj_target = #self.trj
     end
 end
@@ -86,8 +87,8 @@ function aim:render(gstate)
     local club = self:current_club()
 
     -- Draw aiming UI elements
-    draw.trajectory  (hole, self.trj, self.trj_target, club.trchar)
-    draw.ball        (hole, gstate:ball_position())
+    draw.trajectory(hole, self.trj, self.trj_block, self.trj_target, club.trchar)
+    draw.ball      (hole, gstate:ball_position())
 
     -- UI
     draw.rightstatus("Press [?] for help")
@@ -102,7 +103,7 @@ function aim:render(gstate)
             local st  = hole.opt_course[i]
             local fn  = hole.opt_course[i+1]
             local trj = geometry.bresenham_trajectory(hole, club, self.wind_vector, fn, st)
-            draw.trajectory(hole, trj, #trj, '%')
+            draw.trajectory(hole, trj, #trj, #trj, '%')
         end
     end
 end
