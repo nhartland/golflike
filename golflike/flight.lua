@@ -22,6 +22,11 @@ end
 function flight:tick(gstate)
     -- Sleep for a bit to limit framerate
     termio.sleep(0.15)
+    -- Handle empty trajectories
+    if #self.trajectory == 0 then
+        self.flight_end = true
+        return
+    end
     -- Move along trajectory
     if self.trj_position < #self.trajectory then
         self.trj_position = self.trj_position + 1
@@ -42,7 +47,9 @@ end
 function flight:render(gstate)
     local hole = gstate:current_hole()
     assert(hole ~= nil, "flight:render encountered a nil map")
-    draw.trajectory (hole, self.trajectory, self.trj_position - 3, self.trj_position,  self.club.trchar)
+    if #self.trajectory > 0 then
+        draw.trajectory (hole, self.trajectory, self.trj_position - 3, self.trj_position,  self.club.trchar)
+    end
     draw.ball(hole, gstate:ball_position())
     draw.rightstatus("Ball in flight")
 end
