@@ -87,7 +87,10 @@ function aim:render(gstate)
     local club = self:current_club()
 
     -- Draw aiming UI elements
-    draw.trajectory(hole, self.trj, self.trj_block, self.trj_target, club.trchar)
+    --draw.trajectory(hole, self.trj, self.trj_block, self.trj_target, club.trchar)
+    draw.trajectory(hole, self.trj, math.huge, self.trj_target, club.trchar)
+    local actual = self:get_trajectory(gstate)
+    draw.trajectory(hole, actual, 0, #actual, club.trchar)
     draw.ball      (hole, gstate:ball_position())
 
     -- UI
