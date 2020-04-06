@@ -9,10 +9,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+      - id: get_version
+        run: echo ::set-output name=VERSION::${GITHUB_REF/refs\/tags\//}
       - uses: nhartland/love-build@v1-beta
         id: love-build
         with:
-          app_name: golflike-${{ github.ref }}
+          app_name: golflike-${{ steps.get_version.outputs.VERSION }}
           love_version: '11.3'
           enable_loverocks: true 
       - uses: actions/create-release@v1
