@@ -1,7 +1,8 @@
 package = "golflike"
-version = "scm-1"
+version = "0.6b-1"
 source = {
    url = "git://github.com/nhartland/golflike",
+   tag = "v0.6b",
 }
 
 description = {
@@ -17,7 +18,7 @@ dependencies = {
    "lua >= 5.1",
    "date >= 2.1.2",
    "30log >= 1.3.0",
-   "forma >= 0.2",
+   "forma >= 0.4",
    "lcurses >= 9.0.0",
    "luaposix >= 34.0.4"
 }
