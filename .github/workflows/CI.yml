@@ -1,15 +1,15 @@
 name: CI
 on:
   push:
-    branches: [ master ]
+    branches: [ master, dev ]
   pull_request:
-    branches: [ master ]
+    branches: [ master, dev ]
 jobs:
   build-distributables:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
-    - uses: nhartland/love-build@master
+    - uses: nhartland/love-build@v1-b
       id: love-build
       with:
         app_name: 'golflike'
