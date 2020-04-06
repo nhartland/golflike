@@ -31,8 +31,8 @@ end
 
 function WaterShimmer:tick()
     local non_shimmer = self.water_tiles - self.shimmer_tiles
-    local n_add  = math.random(math.ceil(0.1*non_shimmer:size()))
-    local n_rem  = math.random(math.ceil(0.1*self.shimmer_tiles:size()))
+    local n_add  = math.random(math.ceil(0.05*non_shimmer:size()))
+    local n_rem  = math.random(math.ceil(0.05*self.shimmer_tiles:size()))
     if n_add > 0 then
         self.shimmer_tiles = self.shimmer_tiles + subpattern.random(non_shimmer, n_add)
     end
