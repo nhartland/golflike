@@ -22,7 +22,7 @@ Terminal installation
 
 In addition to the applications above **golflike** can be played in your terminal. The easiest way to set it up is through LuaRocks:
 ```Shell
-  luarocks install --server=http://luarocks.org/dev golflike
+luarocks install golflike
 ```
 **Note:** **golflike** uses the font and default 16-colour palette of your terminal. If your colourscheme is not a good match then the game might look very strange indeed!
 
