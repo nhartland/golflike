@@ -9,7 +9,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
-    - uses: nhartland/love-build@v1-b
+    - uses: nhartland/love-build@v1-beta
       id: love-build
       with:
         app_name: 'golflike'
