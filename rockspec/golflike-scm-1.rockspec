@@ -57,6 +57,7 @@ build = {
             ["golflike.util"]         = "golflike/util.lua",
             ["golflike.lib.log"]      = "golflike/lib/log.lua",
             ["golflike.lib.cmwc"]     = "golflike/lib/cmwc.lua",
+            ["golflike.effects.watershimmer"] = "golflike/effects/watershimmer.lua",
           -- GolfTerm
             ["golfterm.io"]             = "golfterm/io.lua",
             ["golfterm.colour"]         = "golfterm/colour.lua",
