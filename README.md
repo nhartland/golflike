@@ -10,9 +10,9 @@ themes. Games are very short, mostly taking less than ten minutes.
 
 <p align="center">
 <b>Download</b>
-<a href="https://github.com/nhartland/golflike/releases/download/v0.5b/golflike_0_5b_macos.zip">[macos]</a>
-<a href="https://github.com/nhartland/golflike/releases/download/v0.5b/golflike_0_5b_win32.zip">[windows]</a>
-<a href="https://github.com/nhartland/golflike/releases/download/v0.5b/golflike_0_5b.love">[linux]</a>
+<a href="https://github.com/nhartland/golflike/releases/download/v0.6b/golflike-v0.6b_macos.zip">[macos]</a>
+<a href="https://github.com/nhartland/golflike/releases/download/v0.6b/golflike-v0.6b_win32.zip">[windows]</a>
+<a href="https://github.com/nhartland/golflike/releases/download/v0.6b/golflike-v0.6b.love">[linux]</a>
 </p>
 
 Löve **golflike** packages for macos, Windows and Linux can be downloaded from the releases page or the above links.
@@ -20,9 +20,9 @@ Löve **golflike** packages for macos, Windows and Linux can be downloaded from 
 Terminal installation
 ---------------------
 
-In addition to the applications above **golflike** can be played in your terminal. The easiest way to set it up is through LuaRocks:
-```Shell
-  luarocks install --server=http://luarocks.org/dev golflike
+In addition to the applications above **golflike** can be played in your terminal. The easiest way to set it up is through [LuaRocks](https://luarocks.org/):
+```shell
+luarocks install golflike
 ```
 **Note:** **golflike** uses the font and default 16-colour palette of your terminal. If your colourscheme is not a good match then the game might look very strange indeed!
 
@@ -33,12 +33,12 @@ To run **golflike** from source, you will need a recent (5.1+) Lua or LuaJIT ins
 
  - date >= 2.1.2
  - 30log >= 1.3.0
- - forma >= 0.2
+ - forma >= 0.4
  - lcurses >= 9.0.0
  - luaposix >= 34.0.4
 
 With these dependencies, terminal **golflike** can be run with
-```Shell 
-    lua(jit) main.lua
+```shell 
+lua(jit) main.lua
 ```
 
