@@ -1,0 +1,50 @@
+on:
+  push:
+    tags:
+    - 'v*'
+name: Build Release
+jobs:
+  build:
+    name: Build release
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: nhartland/love-build@v1-beta
+        id: love-build
+        with:
+          app_name: golflike-${{ github.ref }}
+          love_version: '11.3'
+          enable_loverocks: true 
+      - uses: actions/create-release@v1
+        id: create_release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ github.ref }}
+          release_name: Release ${{ github.ref }}
+          draft: true
+          prerelease: true
+      - uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }} 
+          asset_path: ${{ steps.love-build.outputs.macos-filename }}
+          asset_name: golflike [macOS]
+          asset_content_type: application/zip
+      - uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }} 
+          asset_path: ${{ steps.love-build.outputs.win32-filename }}
+          asset_name: golflike [Windows]
+          asset_content_type: application/zip
+      - uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }} 
+          asset_path: ${{ steps.love-build.outputs.love-filename }}
+          asset_name: golflike [LOVE]
+          asset_content_type: application/zip

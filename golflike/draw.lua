@@ -25,7 +25,6 @@ function draw.infoline(scorecard, nholes, nballs)
     -- Available balls
     local hpstring = "Balls remaining: "..tostring(nballs)
     termio.right_justify(0, hpstring, colour.b_white, colour.black)
-
 end
 
 -- Draw left-part of lower (status) line
@@ -67,18 +66,10 @@ end
 
 -- Game rendering -------------------------------------------------------------------------------------
 
--- Draw the map
-function draw.map(hole)
-    for ix = 0, common.mapsize_x-1, 1 do
-        for iy = 0, common.mapsize_y - 1, 1 do
-            local tile = map.get(hole, ix, iy)
-            if tile ~= map.tiles[0] then
-                local fg, bg = tile.fg, tile.bg
-                -- +1 to offset from menu bar
-                termio.putchar(ix, iy+1, tile.char, fg, bg)
-            end
-        end
-    end
+-- Draw a map character to terminal
+function draw.to_map(x, y, char, fg, bg)
+    -- +1 to offset from menu bar
+    termio.putchar(x, y+1, char, fg, bg)
 end
 
 -- Draw the red target area for aiming
@@ -88,9 +79,9 @@ function draw.target(hole, target)
         if in_game_bounds(vtarget) then
             local tile = map.get(hole, vtarget.x, vtarget.y)
             if tile.block.air == false then
-                termio.putchar(vtarget.x, vtarget.y+1, '=', colour.red, tile.bg)
+                draw.to_map(vtarget.x, vtarget.y, '=', colour.red, tile.bg)
             else
-                termio.putchar(vtarget.x, vtarget.y+1, tile.char, colour.magenta, tile.bg)
+                draw.to_map(vtarget.x, vtarget.y, tile.char, colour.magenta, tile.bg)
             end
         end
     end
@@ -102,7 +93,7 @@ function draw.trajectory(hole, trajectory, char)
         local vtrj = trajectory[itrj]
         if in_game_bounds(vtrj) then
             local tile = map.get(hole, vtrj.x, vtrj.y)
-            termio.putchar(vtrj.x, vtrj.y+1, char, colour.red, tile.bg)
+            draw.to_map(vtrj.x, vtrj.y, char, colour.red, tile.bg)
         end
     end
 end
@@ -110,7 +101,7 @@ end
 -- Draw the ball
 function draw.ball(hole, ball)
     local tile = map.get(hole, ball.x, ball.y)
-    termio.putchar(ball.x, ball.y+1, 'o', colour.b_white, tile.bg)
+    draw.to_map(ball.x, ball.y, 'o', colour.b_white, tile.bg)
 end
 
 

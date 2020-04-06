@@ -37,7 +37,7 @@ function help:render(_)
     -- Fill in background of help screen
     local background = string.rep(" ", termio.wsize.x)
     for y=helpscreen_y_origin-1, helpscreen_y_origin + helpscreen_y_size, 1 do
-        termio.centre_justify(y, background, colour.white, colour.black)
+        termio.centre_justify(y, background, colour.b_white, colour.black)
     end
 
     -- Render various components
@@ -57,7 +57,7 @@ end
 function help:render_gametips(origin)
     local tip1 = "Holes can be scored by either a direct landing, or putting over the hole"
     local tip2 = "Make use of precision aim (shift + club up/down)"
-    termio.centre_justify(origin.y+0,"---TIPS---",  colour.white, colour.black)
+    termio.centre_justify(origin.y+0,"---TIPS---",  colour.b_white, colour.black)
     termio.centre_justify(origin.y+1,  tip1,  colour.green, colour.black)
     termio.centre_justify(origin.y+2,tip2,  colour.green, colour.black)
 end
@@ -65,7 +65,7 @@ end
 -- Render the map key
 function help:render_key(origin)
     termio.putstr(origin.x, origin.y,"Map Key",  colour.green, colour.black)
-    termio.putstr(origin.x, origin.y+1,"-------",  colour.white, colour.black)
+    termio.putstr(origin.x, origin.y+1,"-------",  colour.b_white, colour.black)
     local tiles   = get_tiles(false)
     for it,tile in ipairs(tiles) do
         local h = origin + cell.new(0,it+1)
@@ -73,7 +73,7 @@ function help:render_key(origin)
         if tile.hazard == true then
             termio.putstr (h.x+2, h.y, tile.name, colour.red, colour.black)
         else
-            termio.putstr (h.x+2, h.y, tile.name, colour.white, colour.black)
+            termio.putstr (h.x+2, h.y, tile.name, colour.b_white, colour.black)
         end
     end
 end
@@ -81,7 +81,7 @@ end
 -- Render the club information
 function help:render_clubs(origin)
     termio.putstr(origin.x+1, origin.y,   "Club range by Terrain ",  colour.green, colour.black)
-    termio.putstr(origin.x+1, origin.y+1, "----------------------", colour.white, colour.black)
+    termio.putstr(origin.x+1, origin.y+1, "----------------------", colour.b_white, colour.black)
     termio.putstr(origin.x+1, origin.y+2, "Club   ACC" ,colour.yellow, colour.black)
     local p0 = origin + cell.new(1,2)
     local tiles = get_tiles(true)
@@ -89,16 +89,16 @@ function help:render_clubs(origin)
         local n0 = p0 + cell.new(0,i)
         local s0 = p0 + cell.new(1 + clubs.max_name(),i)
         termio.putstr(n0.x, n0.y, club.name, colour.green, colour.black)
-        termio.putstr(s0.x, s0.y, tostring(club.accuracy), colour.white, colour.black)
+        termio.putstr(s0.x, s0.y, tostring(club.accuracy), colour.b_white, colour.black)
         for it,tile in ipairs(tiles) do
             local p = p0 + cell.new(3*it+clubs.max_name()+1,i)
             local h = p0 + cell.new(3*it+clubs.max_name()+1,0)
             termio.putchar(h.x, h.y,  tile.char,tile.fg,tile.bg)
             termio.putchar(h.x+1, h.y,tile.char,tile.fg,tile.bg)
-            termio.putstr(p.x, p.y, tostring(clubs.get_range(tile.name, club)), colour.white, colour.black)
+            termio.putstr(p.x, p.y, tostring(clubs.get_range(tile.name, club)), colour.b_white, colour.black)
         end
     end
-    termio.putstr(origin.x+1, origin.y+3+#clubs, "----------------------", colour.white, colour.black)
+    termio.putstr(origin.x+1, origin.y+3+#clubs, "----------------------", colour.b_white, colour.black)
     termio.putstr(origin.x+1, origin.y+4+#clubs, "ACC: Accuracy / Spread", colour.yellow, colour.black)
 end
 
@@ -113,7 +113,7 @@ function help:render_controls(origin)
     local standings = keys.findKey(keymap.standings)
     local exit_game = keys.findKey(keymap.exit_game)
     ------------------------
-    local fg, bg = colour.white, colour.black
+    local fg, bg = colour.b_white, colour.black
     termio.putstr(origin.x, origin.y + 1,"  ------------------------------  ", fg, bg)
     termio.putstr(origin.x, origin.y + 2,"  "..rl..","..rr..": Rotate counter-/clockwise", fg, bg)
     termio.putstr(origin.x, origin.y + 3,"  "..nc..","..pc..": Choose next/previous club", fg, bg)
@@ -127,10 +127,10 @@ end
 -- Render UI tips
 function help:render_uitips()
     local background = string.rep(" ", termio.wsize.x)
-    termio.putstr(0,  1, background, colour.white, colour.black)
+    termio.putstr(0,  1, background, colour.b_white, colour.black)
     termio.putstr(10, 1,"^^  Your Scorecard  ^^", colour.yellow, colour.black)
     termio.putstr(44, 1,"Game over at zero balls remaining ^^", colour.yellow, colour.black)
-    termio.putstr(0,  termio.wsize.y-2, background, colour.white, colour.black)
+    termio.putstr(0,  termio.wsize.y-2, background, colour.b_white, colour.black)
     termio.putstr(2,  termio.wsize.y-2,"vv  Hole Stats  vv", colour.yellow, colour.black)
     termio.putstr(35, termio.wsize.y-2,"vv Chance of losing ball to a hazard", colour.yellow, colour.black)
 end

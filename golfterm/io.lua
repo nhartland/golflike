@@ -12,9 +12,9 @@ driver = require(path.."lcurses_driver") end
 
 -- Should convert worigin, wsize from tables to normal x,y numbers (rows/cols)
 local termio = {
-    centre = true,             -- Centre window in current terminal
-    worig  = {x=0, y=0},       -- Origin of window in terminal
-    wsize  = {x=0, y=0},       -- Requested window size
+    centre   = true,             -- Centre window in current terminal
+    worig    = {x=0, y=0},       -- Origin of window in terminal
+    wsize    = {x=0, y=0}       -- Requested window size
 }
 
 -- Drawing buffers: stores character and foreground/background
@@ -89,6 +89,7 @@ function termio.draw()
             end
         end
     end
+    -- Draw
     driver.draw()
 end
 
@@ -139,9 +140,18 @@ function termio.putstr(x, y, str, fg, bg)
 end
 
 -- Functions that pass straight through to the underlying driver
-function termio.sleep(s)                  driver.sleep(s)           end -- Sleep for `s` seconds
+function termio.getTime()          return driver.getTime()          end -- Current elapsed time (ms)
 function termio.getInput(blocking) return driver.getInput(blocking) end -- Get input from terminal
 function termio.flushInput()       return driver.flushInput()       end -- Flush input in terminal
+
+-- Sleep for 's' seconds
+function termio.sleep(s)
+    local startTime = driver.getTime()
+    repeat
+        local elapsedTime = driver.getTime() - startTime
+    until elapsedTime > s*1000
+    termio.flushInput()
+end
 
 -- Check terminal dimensions ----------------------------------------------
 -- Returns true if the driver provides a sufficiently large terminal, false if not

@@ -1,10 +1,11 @@
 --- lcurses_driver.lua
--- Underlying terminal driver via lcurses.
+-- Underlying terminal driver via lcurses and luaposix.
 -- This mostly translates term.io calls to ncurses calls,
 -- but also abstracts away the ncurses 'color_pairs'.
 local path   = (...):match("(.-)[^%.]+$")
 local curses = require("curses")
 local keys   = require(path..'keys')
+local time   = require("posix.sys.time")
 
 local lc_driver = {
     keyMap = {},  -- Maps ncurses codes to term.key codes
@@ -63,6 +64,7 @@ function lc_driver.init(_)
     lc_driver.display = curses.initscr() -- Initialise screen
     curses.echo 	(false)		   -- Disable echoing of each print
     curses.nl 		(false)		   -- Disable return being interpreted as newline
+    curses.halfdelay(2)            -- 1/10th of a second halfdelay
     curses.curs_set	(0)		       -- Disable cursor
     curses.start_color()           -- Setup colours
     curses.use_default_colors()
@@ -76,6 +78,13 @@ function lc_driver.size()  return lc_driver.display:getmaxyx() end -- Return (y,
 -- Using mcaddch here instead of duplicating mvaddstr causes wierd rendering of digits
 function lc_driver.mvaddch (r,c,chr) lc_driver.display:mvaddstr(r,c,chr) end
 function lc_driver.mvaddstr(r,c,str) lc_driver.display:mvaddstr(r,c,str) end
+
+-- Get elapsed time in milliseconds
+function lc_driver.getTime()
+    local CurrentTime = time.gettimeofday()
+    local ElapsedTime = 1000*CurrentTime.tv_sec + CurrentTime.tv_usec/1000
+    return ElapsedTime
+end
 
 --- Set current drawing colour (foreground/background)
 function lc_driver.setcolour(fg, bg)
@@ -92,12 +101,6 @@ end
 --- Flush keyboard input
 function lc_driver.flushInput()
     curses.flushinp ()
-end
-
---- Sleep for `s` seconds
-function lc_driver.sleep(s)
-    os.execute("sleep " .. tostring(s))
-    curses.flushinp()
 end
 
 return lc_driver

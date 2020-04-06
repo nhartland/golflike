@@ -57,7 +57,7 @@ colourmap[colour.yellow]    = {255,180,84}
 colourmap[colour.blue]      = {38,107,133}
 colourmap[colour.magenta]   = {203,37,61}
 colourmap[colour.cyan]      = {137,150,168}
-colourmap[colour.white]     = {254,254,254}
+colourmap[colour.white]     = {110,220,255}
 -- Bright colours
 colourmap[colour.b_black]   = {35,50,63}
 colourmap[colour.b_red]     = {240,94,51}
@@ -123,7 +123,11 @@ end
 
 function l2d.close()                                end -- Close the display
 function l2d.size()   return l2d.size_y, l2d.size_x end -- Return the (y, x) size of the display
-function l2d.sleep(s) love.timer.sleep( s )         end -- Sleep for `s` seconds
+
+-- Return elapsed time in milliseconds
+function l2d.getTime()
+    return love.timer.getTime()*1000
+end
 
 -- Print a character `ch` at line `l` column `c`
 function l2d.mvaddch(l, c, ch)

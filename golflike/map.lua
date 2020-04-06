@@ -1,7 +1,7 @@
 --- map.lua
 -- This contains the basic representation of the map and tiles
 local map = {}
-local colour = require("golfterm.colour")
+local colour  = require("golfterm.colour")
 
 -- List of tiles in the game
 -- Fields are mostly self-explanatory.
@@ -14,7 +14,7 @@ map.tiles = {
     {name = "Fairway", char = '.', hazard = false, block = {air = false, ground = false}, fg = colour.green,   bg = colour.b_green},
     {name = "Rough",   char = '"', hazard = false, block = {air = false, ground = false}, fg = colour.black,   bg = colour.green},
     {name = "Bunker",  char = ',', hazard = false, block = {air = false, ground = true }, fg = colour.yellow,  bg = colour.b_yellow},
-    {name = "Water",   char = '~', hazard = true,  block = {air = false, ground = true }, fg = colour.white,   bg = colour.blue},
+    {name = "Water",   char = '~', hazard = true,  block = {air = false, ground = true }, fg = colour.b_blue,  bg = colour.blue},
     {name = "Tree",    char = 'Y', hazard = true,  block = {air = true,  ground = true }, fg = colour.b_black, bg = colour.green},
 }
 
@@ -26,8 +26,9 @@ end
 
 -- Generate a new map object
 function map.new(sx, sy)
-    local newmap = {}
-    newmap.coordinates = {}
+    local newmap = {
+        active_effects = {}, -- Active effects
+        coordinates = {} }   -- Map coordinates
     for i=0,sx-1,1 do
         newmap.coordinates[i] = {}
         for j = 0, sy-1, 1 do
@@ -50,6 +51,21 @@ function map.set(m, x, y, v)
     if m.coordinates[x] == nil then return false end
     if m.coordinates[x][y] == nil then return false end
     m.coordinates[x][y] = v return true
+end
+
+-- Finalise the initialisation of the map
+-- Principally this sets up the effects layer
+-- Maybe this should be done in hole post-processing?
+function map.finalise(m)
+    -- Water shimmering
+    table.insert(m.active_effects, require("golflike.effects.watershimmer")(m))
+    return m
+end
+
+function map.effects_tick(m)
+    for _, effect in ipairs(m.active_effects) do
+        effect:tick()
+    end
 end
 
 return map

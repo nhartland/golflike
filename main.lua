@@ -1,5 +1,6 @@
 -- main.lua
 -- Game loop
+local map         = require('golflike.map')
 local log         = require('golflike.lib.log')
 local common      = require('golflike.common')
 local competition = require('golflike.competition')
@@ -8,10 +9,13 @@ local maprender   = require('golflike.maprender')
 local menu        = require('golflike.menu')
 local termio      = require('golfterm.io')
 
-local game = {}
+local game = { }
 if love ~= nil then
     game = love
 end
+
+-- Initialise wallclock
+game.lastClock = termio.getTime()
 
 --- Game initialisation
 function game.load()
@@ -22,6 +26,7 @@ function game.load()
     game.state = state()
     game.stack = {maprender(game.state), menu(game.state)}
     game.tick = true
+    game.render = false
 
     -- Initialise viewable area +2 needed for status lines
     termio.init(common.mapsize_x, common.mapsize_y + 2, "golflike")
@@ -33,6 +38,15 @@ function game.draw()
     termio.draw()
 end
 
+-- Render the game to the termio buffer
+local function render_game()
+    termio.clear_buffer() -- Prepare for rendering
+    for _,gs in ipairs(game.stack) do
+        gs:render(game.state)
+    end
+    game.draw()
+end
+
 -- Main game loop
 function game.update()
     -- Main loop, continues until state stack is empty
@@ -40,11 +54,24 @@ function game.update()
         game.close()
         return false
     end
+    -- Reset rendering
+    game.render = false
+    -- First perform effects tick
+    local currentTime = termio.getTime()
+    local deltaTime = currentTime - game.lastClock
+    if game.state:current_hole() ~= nil and deltaTime > 150 then
+        game.render = true
+        game.lastClock = currentTime
+        map.effects_tick(game.state:current_hole())
+    end
+    -- Secondly perform gameplay tick
     if game.tick == true then
-        termio.clear_buffer() -- Prepare for rendering
         game.stack[#game.stack]:tick(game.state)
-        for _,gs in ipairs(game.stack) do gs:render(game.state) end
-        game.draw()
+        game.render = true
+    end
+    -- Render if neccesary
+    if game.render == true then
+        render_game()
     end
     -- Get input from player
     local kill, push

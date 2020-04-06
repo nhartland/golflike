@@ -45,14 +45,17 @@ function flight:render(gstate)
 end
 
 function flight:control(gstate)
+    -- Flight not yet finished
     if #self.trajectory  ~= 0 then
-        -- Still more trajectory to go
         return true, false, nil
     end
+    -- Flight finished with hole scored
     if self.hole_scored == true then
         -- Move to score_hole state
         return true, true, score_hole(gstate)
-    elseif self.hazard == true then
+    end
+    -- Flight finished in hazard
+    if self.hazard == true then
         -- Encountered a hazard
         local aim = require('golflike.aim')
         gstate:lose_ball() -- Ball lost to hazard
@@ -67,11 +70,10 @@ function flight:control(gstate)
             else msg = msg .. " ball remaining" end
             return true, true, message(gstate, aim, msg)
         end
-    else
-        -- If we've landed, return to aiming
-        local aim = require('golflike.aim')
-        return true, true, aim(gstate)
     end
+    -- Flight finished normally
+    local aim = require('golflike.aim')
+    return true, true, aim(gstate)
 end
 
 -- Handle ball hazards (water/trees/OOB)
