@@ -32,7 +32,7 @@ jobs:
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }} 
           asset_path: ${{ steps.love-build.outputs.macos-filename }}
-          asset_name: golflike [macOS]
+          asset_name: ${{ steps.love-build.outputs.macos-filename }}
           asset_content_type: application/zip
       - uses: actions/upload-release-asset@v1
         env:
@@ -40,7 +40,7 @@ jobs:
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }} 
           asset_path: ${{ steps.love-build.outputs.win32-filename }}
-          asset_name: golflike [Windows]
+          asset_name: ${{ steps.love-build.outputs.win32-filename }}
           asset_content_type: application/zip
       - uses: actions/upload-release-asset@v1
         env:
@@ -48,5 +48,5 @@ jobs:
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }} 
           asset_path: ${{ steps.love-build.outputs.love-filename }}
-          asset_name: golflike [LOVE]
+          asset_name: ${{ steps.love-build.outputs.love-filename }}
           asset_content_type: application/zip
