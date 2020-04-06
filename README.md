@@ -10,9 +10,9 @@ themes. Games are very short, mostly taking less than ten minutes.
 
 <p align="center">
 <b>Download</b>
-<a href="https://github.com/nhartland/golflike/releases/download/v0.5b/golflike_0_5b_macos.zip">[macos]</a>
-<a href="https://github.com/nhartland/golflike/releases/download/v0.5b/golflike_0_5b_win32.zip">[windows]</a>
-<a href="https://github.com/nhartland/golflike/releases/download/v0.5b/golflike_0_5b.love">[linux]</a>
+<a href="https://github.com/nhartland/golflike/releases/download/v0.6b/golflike-v0.6b_macos.zip">[macos]</a>
+<a href="https://github.com/nhartland/golflike/releases/download/v0.6b/golflike-v0.6b_win32.zip">[windows]</a>
+<a href="https://github.com/nhartland/golflike/releases/download/v0.6b/golflike-v0.6b.love">[linux]</a>
 </p>
 
 Löve **golflike** packages for macos, Windows and Linux can be downloaded from the releases page or the above links.
