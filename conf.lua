@@ -1,7 +1,3 @@
-if love.filesystem then
-    require 'rocks' ()
-end
-
 function love.conf(t)
     t.title = 'golflike'
     t.package = 'golflike'
