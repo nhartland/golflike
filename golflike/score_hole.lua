@@ -14,7 +14,7 @@ function score_hole:render() end
 
 -- Add current score to scorecard, reset stroke count
 local function increment_scorecard(gstate)
-    local score = gstate:get_stroke_count() - #gstate:current_hole().opt_course
+    local score = gstate:get_stroke_count() - #(gstate:current_hole().opt_course+1)
     table.insert(gstate.scorecard, score)
 end
 
