@@ -15,15 +15,15 @@ jobs:
         app_name: 'golflike'
         love_version: '11.3'
         dependencies: 'rockspec/golflike-scm-1.rockspec'
-    - uses: actions/upload-artifact@v1
+    - uses: actions/upload-artifact@v4
       with:
         name: golflike-macos_build
         path: ${{ steps.love-build.outputs.macos-filename }}
-    - uses: actions/upload-artifact@v1
+    - uses: actions/upload-artifact@v4
       with:
         name: golflike-win32_build
         path: ${{ steps.love-build.outputs.win32-filename }}
-    - uses: actions/upload-artifact@v1
+    - uses: actions/upload-artifact@v4
       with:
         name: golflike-love_build
         path: ${{ steps.love-build.outputs.love-filename }}
