@@ -15,7 +15,7 @@ jobs:
         id: love-build
         with:
           app_name: golflike-${{ steps.get_version.outputs.VERSION }}
-          love_version: '11.3'
+          love_version: '11.5'
           enable_loverocks: true 
           dependencies: 'rockspec/golflike-scm-1.rockspec'
       - uses: actions/create-release@v1
