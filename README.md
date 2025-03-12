@@ -34,7 +34,7 @@ To run **golflike** from source, you will need a recent (5.1+) Lua or LuaJIT ins
 
  - date >= 2.1.2
  - 30log >= 1.3.0
- - forma >= 0.4
+ - forma >= 1.0
  - lcurses >= 9.0.0
  - luaposix >= 34.0.4
 
