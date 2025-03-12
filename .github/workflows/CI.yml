@@ -13,7 +13,7 @@ jobs:
       id: love-build
       with:
         app_name: 'golflike'
-        love_version: '11.3'
+        love_version: '11.5'
         dependencies: 'rockspec/golflike-scm-1.rockspec'
     - uses: actions/upload-artifact@v4
       with:
