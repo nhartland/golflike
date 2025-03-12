@@ -1,7 +1,8 @@
 # golflike
 For those who like their golf *procedurally generated*.
+
 <p align="center">
-  <img width="693" height="385" src="https://i.imgur.com/bcsGrSo.png">
+  <img width="693" height="385" src="https://i.imgur.com/NdFAb6E.gif">
 </p>
 
 **golflike** is an attempt at making a coffee-break golf-themed roguelike. It
