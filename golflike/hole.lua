@@ -3,7 +3,6 @@
 -- calls various hole `generators` stored in `mapgen`. Once a hole is
 -- generated, a number of post-processing checks are performed here. If they
 -- pass, the hole is printed to the representation in `map` and returned.
-local subpattern = require('forma.subpattern')
 local primitives = require('forma.primitives')
 local pattern    = require('forma.pattern')
 local cell       = require('forma.cell')
@@ -12,7 +11,7 @@ local map        = require('golflike.map')
 local par        = require('golflike.par')
 local mapgen     = require('golflike.mapgen')
 local common     = require('golflike.common')
-local hole     = {}
+local hole       = {}
 
 local generators = {
     links   = mapgen('Bunker'),
@@ -47,24 +46,25 @@ function hole.stats_report()
     report(gs.nfails .. " failures at hole generation")
     report("Failure breakdown:")
     for k, v in pairs(gs.reasons) do
-        report(k ..': '.. v)
+        report(k .. ': ' .. v)
     end
 end
+
 ---------------------------------------------------------------
 -- Check pattern specification for irregularities.
 -- Checks a) That all specified patters correspond to map tiles
 --        b) That there are no overlapping patterns
 local function verify_patterns(patterns)
-    for k,_ in pairs(patterns) do
-        assert(map.dict[k] ~= nil, "Unrecognised pattern: " .. k )
+    for k, _ in pairs(patterns) do
+        assert(map.dict[k] ~= nil, "Unrecognised pattern: " .. k)
     end
-    for k,v in ipairs(map.tiles) do
+    for k, v in ipairs(map.tiles) do
         if patterns[v.name] ~= nil then
-            for t=k+1,#map.tiles,1 do
+            for t = k + 1, #map.tiles, 1 do
                 local tname = map.tiles[t].name
                 local tpat = patterns[tname]
                 if tpat ~= nil then
-                    local inter = pattern.intersection(patterns[v.name], tpat)
+                    local inter = tpat:intersect(patterns[v.name])
                     assert(inter:size() == 0, "Element overlap " .. v.name .. " " .. tname)
                 end
             end
@@ -75,8 +75,8 @@ end
 
 --- Print a generated tile list to a `map` coordinate system
 local function level_print(game, patterns)
-    for k,v in pairs(patterns) do
-        for _,p in pairs(v:cell_list()) do
+    for k, v in pairs(patterns) do
+        for _, p in pairs(v:cell_list()) do
             map.set(game, p.x, p.y, map.dict[k])
         end
     end
@@ -91,8 +91,8 @@ local function max_separated_points(points, measure)
     assert(#points > 1, "max_separated_points requires at least two points")
     local mi, mj = -1, -1
     local maxdist = -1
-    for i=1, #points-1, 1 do
-        for j=i+1, #points, 1 do
+    for i = 1, #points - 1, 1 do
+        for j = i + 1, #points, 1 do
             local dist = measure(points[i], points[j])
             if dist > maxdist then
                 maxdist = dist
@@ -106,11 +106,11 @@ end
 -- Find locations for the hole and tee on the fairway
 -- returns nil if no satisfactory location can be found
 local function place_hole_tee(fairway)
-    local segments = subpattern.bsp(fairway, 10)
+    local segments = fairway:bsp(10).components
     local candidates = {}
-    for i=1, #segments, 1 do
+    for i = 1, #segments, 1 do
         if segments[i]:size() > 3 then
-            candidates[#candidates+1] = segments[i]:medoid()
+            candidates[#candidates + 1] = segments[i]:medoid()
         end
     end
     if #candidates < 2 then return nil end
@@ -132,10 +132,10 @@ local function compute_par(patterns, target_hole, target_tee)
     --- Build blocking area
     -- Disallow the edges of all blocking patterns
     local blocking = pattern.new()
-    for k,p in pairs(patterns) do
+    for k, p in pairs(patterns) do
         local map_index = map.dict[k]
         if map.tiles[map_index].block.air == true then
-            blocking = blocking + p:surface()
+            blocking = blocking + p:interior_hull()
         end
     end
 
@@ -163,26 +163,26 @@ end
 -- 1-wide openings in blocking tiles.
 local function trim_blocking(patterns, opt_course)
     local trajectory = pattern.new()
-    for i=1, #opt_course-1, 1 do
+    for i = 1, #opt_course - 1, 1 do
         local tbegin = opt_course[i]
-        local tend   = opt_course[i+1]
-        trajectory = trajectory + primitives.line(tbegin, tend)
+        local tend   = opt_course[i + 1]
+        trajectory   = trajectory + primitives.line(tbegin, tend)
     end
 
-    -- Compute edge of trajectory
-    trajectory = trajectory:edge()
+    -- Compute expanded trajectory
+    trajectory = trajectory:dilate()
 
     local blocking = pattern.new()
-    for k,p in pairs(patterns) do
+    for k, p in pairs(patterns) do
         local map_index = map.dict[k]
         if map.tiles[map_index].block.air == true then
-            blocking = blocking + p:surface()
+            blocking = blocking + p:interior_hull()
             patterns[k] = patterns[k] - trajectory
         end
     end
 
     -- Add rough tiles to locations where blocked tiles have been removed
-    patterns["Rough"] = patterns["Rough"] + pattern.intersection(trajectory, blocking)
+    patterns["Rough"] = patterns["Rough"] + trajectory:intersect(blocking)
 end
 
 --- Compute locations for bonus items
@@ -190,18 +190,18 @@ end
 -- in the computation of the par, put an item on it.
 --TODO
 local function add_items(patterns, opt_course)
---    local fairways = pattern.sum(patterns["Fairway"], patterns["Hole"], patterns["Tee"])
---    for _,v in ipairs(opt_course) do
---        local vcell = cell.new(v.x, v.y)
---        fairways = fairways - subpattern.floodfill(fairways, vcell)
---        if fairways:size() == 0 then return end
---    end
---
---    local segments = subpattern.segments(fairways)
---    local selected = segments[#segments]
+    --    local fairways = pattern.sum(patterns["Fairway"], patterns["Hole"], patterns["Tee"])
+    --    for _,v in ipairs(opt_course) do
+    --        local vcell = cell.new(v.x, v.y)
+    --        fairways = fairways - subpattern.floodfill(fairways, vcell)
+    --        if fairways:size() == 0 then return end
+    --    end
+    --
+    --    local segments = subpattern.segments(fairways)
+    --    local selected = segments[#segments]
     --local medoid = selected:medoid()
---    patterns["Item"] = pattern.new():insert(medoid.x, medoid.y)
---    patterns["Fairway"] = patterns["Fairway"] - patterns["Item"]
+    --    patterns["Item"] = pattern.new():insert(medoid.x, medoid.y)
+    --    patterns["Fairway"] = patterns["Fairway"] - patterns["Item"]
     return
 end
 
@@ -223,9 +223,9 @@ function hole.process(patternSpec)
     end
 
     -- Manage hole and tee patterns
-    patternSpec["Hole"] = pattern.new():insert(target_hole.x, target_hole.y)
-    patternSpec["Tee"]  = pattern.new():insert(target_tee.x,  target_tee.y )
-    patternSpec["Fairway"] = patternSpec["Fairway"] - ( patternSpec["Hole"] + patternSpec["Tee"] )
+    patternSpec["Hole"]    = pattern.new():insert(target_hole.x, target_hole.y)
+    patternSpec["Tee"]     = pattern.new():insert(target_tee.x, target_tee.y)
+    patternSpec["Fairway"] = patternSpec["Fairway"] - (patternSpec["Hole"] + patternSpec["Tee"])
 
     -- Verify pattern integrity
     if verify_patterns(patternSpec) == false then
@@ -260,11 +260,11 @@ end
 -- If the specification passed processing, returns the new map,
 -- otherwise returns `nil`.
 function hole.new(rng, mapname)
-    local generator = generators[mapname]
+    local generator         = generators[mapname]
     generation_stats.ntries = generation_stats.ntries + 1
-    local domain = primitives.square(common.mapsize_x, common.mapsize_y)
-    local mapspec = generator(domain, rng)
-    local new_map   = hole.process(mapspec)
+    local domain            = primitives.square(common.mapsize_x, common.mapsize_y)
+    local mapspec           = generator(domain, rng)
+    local new_map           = hole.process(mapspec)
     if new_map ~= nil then
         return map.finalise(new_map)
     else -- Mapgen failed

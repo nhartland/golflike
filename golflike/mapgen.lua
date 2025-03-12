@@ -1,7 +1,6 @@
 --- mapgen.lua
 -- Standard map layout generation
 local neighbourhood = require('forma.neighbourhood')
-local subpattern    = require('forma.subpattern')
 local automata      = require('forma.automata')
 local cell          = require('forma.cell')
 local utl           = require('golflike.util')
@@ -9,8 +8,8 @@ local utl           = require('golflike.util')
 -- Performs a uniform sampling of the domain
 local function uniform(seedfrac)
     return function(rng, domain)
-    local desired_cells = math.max(1,math.floor(domain:size()*seedfrac))
-    return subpattern.random(domain, desired_cells, rng)
+        local desired_cells = math.max(1, math.floor(domain:size() * seedfrac))
+        return domain:sample(desired_cells, rng)
     end
 end
 
@@ -26,22 +25,23 @@ local function voronoi(seedfrac)
     local sample_every = 3
     local measure = cell.manhattan
     return function(rng, domain)
-    local seeds = subpattern.random(domain, n_segments, rng)
-    -- Chunk level into voronoi segments - should probably floodfill first
-    local segments, _, _  = subpattern.voronoi_relax(seeds, domain, measure, 5)
-    table.sort(segments, function(a,b) return a:centroid().x < b:centroid().x end)
-    -- Sample uniformly these segments
-    local sample = uniform(seedfrac)(rng, segments[1] + segments[#segments])
-    for i=2, #segments-1, sample_every do
-       sample = sample + uniform(seedfrac)(rng, segments[i])
-    end
-    return sample
+        local seeds          = domain:sample(n_segments, rng)
+        -- Chunk level into voronoi segments - should probably floodfill first
+        local segments, _, _ = seeds:voronoi_relax(domain, measure, 5)
+        segments             = segments.components
+        table.sort(segments, function(a, b) return a:centroid().x < b:centroid().x end)
+        -- Sample uniformly these segments
+        local sample = uniform(seedfrac)(rng, segments[1] + segments[#segments])
+        for i = 2, #segments - 1, sample_every do
+            sample = sample + uniform(seedfrac)(rng, segments[i])
+        end
+        return sample
     end
 end
 
 -- Run the CA until either convergence or 20 iterations
 local function cellular_automata(rng, domain, rulesig, sampling)
-    local ruleset = {automata.rule(neighbourhood.moore(), rulesig)}
+    local ruleset = { automata.rule(neighbourhood.moore(), rulesig) }
     local new_pat = sampling(rng, domain)
     local converged, iterations = false, 0
     repeat
@@ -58,28 +58,30 @@ return function(base)
     return function(domain, rng)
         local patternSpec = {}
 
-        local hazards = {"Water", "Tree", "Bunker"}
+        local hazards = { "Water", "Tree", "Bunker" }
         assert(utl.popandswap(hazards, base)) -- Remove base type from hazards
-        local hazard1 = hazards[rng(#hazards)] assert(utl.popandswap(hazards, hazard1))
-        local hazard2 = hazards[rng(#hazards)] assert(utl.popandswap(hazards, hazard2))
+        local hazard1 = hazards[rng(#hazards)]
+        assert(utl.popandswap(hazards, hazard1))
+        local hazard2 = hazards[rng(#hazards)]
+        assert(utl.popandswap(hazards, hazard2))
 
         patternSpec[base]      = domain
         patternSpec["Rough"]   = cellular_automata(rng, patternSpec[base], "B5678/S345678", uniform(0.5))
 
-        local fairway_domain = patternSpec["Rough"] - patternSpec["Rough"]:surface()
+        local fairway_domain   = patternSpec["Rough"]:erode()
         patternSpec["Fairway"] = cellular_automata(rng, fairway_domain, "B5678/S45678", voronoi(0.8))
 
         -- Clear double-counts
-        patternSpec[base] = patternSpec[base] - patternSpec["Rough"]
-        patternSpec["Rough"] = patternSpec["Rough"] - patternSpec["Fairway"]
+        patternSpec[base]      = patternSpec[base] - patternSpec["Rough"]
+        patternSpec["Rough"]   = patternSpec["Rough"] - patternSpec["Fairway"]
 
-        local domain1 = patternSpec["Rough"] - patternSpec["Rough"]:surface(neighbourhood.moore())
-        patternSpec[hazard1] = cellular_automata(rng, domain1, "B678/S345678", uniform(0.4))
-        patternSpec["Rough"] = patternSpec["Rough"] - patternSpec[hazard1]
+        local domain1          = patternSpec["Rough"]:erode()
+        patternSpec[hazard1]   = cellular_automata(rng, domain1, "B678/S345678", uniform(0.4))
+        patternSpec["Rough"]   = patternSpec["Rough"] - patternSpec[hazard1]
 
-        local domain2 = patternSpec["Rough"] - patternSpec["Rough"]:surface(neighbourhood.moore())
-        patternSpec[hazard2] = cellular_automata(rng, domain2, "B5678/S345678", uniform(0.8))
-        patternSpec["Rough"] = patternSpec["Rough"] - patternSpec[hazard2]
+        local domain2          = patternSpec["Rough"]:erode()
+        patternSpec[hazard2]   = cellular_automata(rng, domain2, "B5678/S345678", uniform(0.8))
+        patternSpec["Rough"]   = patternSpec["Rough"] - patternSpec[hazard2]
 
         return patternSpec
     end
