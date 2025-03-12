@@ -8,22 +8,22 @@ jobs:
   build-distributables:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
-    - uses: nhartland/love-build@v1-beta2
+    - uses: actions/checkout@v4
+    - uses: nhartland/love-build@v1-beta5
       id: love-build
       with:
         app_name: 'golflike'
         love_version: '11.3'
         dependencies: 'rockspec/golflike-scm-1.rockspec'
-    - uses: actions/upload-artifact@v1
+    - uses: actions/upload-artifact@v4
       with:
         name: golflike-macos_build
         path: ${{ steps.love-build.outputs.macos-filename }}
-    - uses: actions/upload-artifact@v1
+    - uses: actions/upload-artifact@v4
       with:
         name: golflike-win32_build
         path: ${{ steps.love-build.outputs.win32-filename }}
-    - uses: actions/upload-artifact@v1
+    - uses: actions/upload-artifact@v4
       with:
         name: golflike-love_build
         path: ${{ steps.love-build.outputs.love-filename }}

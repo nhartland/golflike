@@ -9,12 +9,14 @@ local competition = require("golflike.competition")
 local score_hole  = class("score_hole")
 
 function score_hole:init() end
+
 function score_hole:tick(_) end
+
 function score_hole:render() end
 
 -- Add current score to scorecard, reset stroke count
 local function increment_scorecard(gstate)
-    local score = gstate:get_stroke_count() - #gstate:current_hole().opt_course
+    local score = gstate:get_stroke_count() - (#gstate:current_hole().opt_course + 1)
     table.insert(gstate.scorecard, score)
 end
 
@@ -26,7 +28,7 @@ function score_hole:control(gstate)
     competition.update(gstate:get_rivals(), gstate:total_holes())
     -- Send message with current standings and transition
     local text, tcolour = competition.get_standings_message(gstate:get_scorecard(),
-                           gstate:get_rivals(), gstate:total_holes())
+        gstate:get_rivals(), gstate:total_holes())
     if gstate:remaining_holes() == 1 then
         text[1] = "Course complete!"
     else

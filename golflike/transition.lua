@@ -33,7 +33,7 @@ function transition:control(gstate)
     gstate:move(hole.tee)
     -- Print new hole message
     local msg = gstate:name() .. '\n'
-    msg = msg .. "Hole ".. #gstate:get_scorecard() + 1 .. ", Par " .. #hole.opt_course
+    msg = msg .. "Hole ".. #gstate:get_scorecard() + 1 .. ", Par " .. #hole.opt_course+1
     local aim = require('golflike.aim')
     return true, true, message(gstate, aim, msg)
 end
